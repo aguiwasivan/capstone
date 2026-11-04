@@ -559,10 +559,11 @@ def reservation_conversion_exists_query():
 
 def build_reservation_analytics(params):
     reservations = filtered_reservation_analytics_queryset(params)
-    total_reservations = reservations.count()
+    total_reservations = 0
 
     status_counts = {status_name: 0 for status_name in RESERVATION_ANALYTICS_STATUSES}
     for row in reservations.values('status').annotate(count=Count('id')):
+        total_reservations += row['count']
         status_name = normalized_reservation_status(row['status'])
         if status_name in status_counts:
             status_counts[status_name] += row['count']
@@ -1123,8 +1124,9 @@ def build_top_performing_agents_analytics(params):
     overall_sales = sales.filter(agent_id__in=user_ids).distinct()
     top_performer = performance_data[0] if performance_data and performance_data[0]['completed_sales'] else None
     total_reservations_handled = sum(row['reservations_handled'] for row in performance_data)
-    total_completed_sales = overall_sales.count()
-    total_sales_amount = decimal_number(overall_sales.aggregate(total=Sum('total_contract_price'))['total'])
+    sales_totals = overall_sales.aggregate(count=Count('id'), total=Sum('total_contract_price'))
+    total_completed_sales = sales_totals['count']
+    total_sales_amount = decimal_number(sales_totals['total'])
     overall_conversion_rate = (
         round((sum(row['converted_count'] for row in reservation_rows.values()) / total_reservations_handled) * 100, 2)
         if total_reservations_handled
@@ -2410,12 +2412,26 @@ def save_detected_lots(subdivision, detected_lots):
     return saved_lot_ids
 
 
+def map_visible_blueprints(request):
+    blueprints = Blueprint.objects.all()
+    if role_name(request) != 'admin':
+        blueprints = blueprints.filter(status='published')
+    return blueprints
+
+
 class SubdivisionListCreateView(APIView):
     permission_classes = []
 
     def get(self, request):
         if request.query_params.get('compact') == 'true':
-            return Response(list(Subdivision.objects.values('id', 'name')))
+            subdivisions = Subdivision.objects.all()
+            if request.query_params.get('map_selectable') == 'true':
+                # Match the map selector and the existing publication sync's
+                # title-to-name relationship, irrespective of lot availability.
+                names = [title or 'Subdivision Blueprint' for title in
+                         map_visible_blueprints(request).values_list('title', flat=True)]
+                subdivisions = subdivisions.filter(name__in=names)
+            return Response(list(subdivisions.values('id', 'name')))
         subdivisions = Subdivision.objects.prefetch_related('lots').all()
         return Response(SubdivisionSerializer(subdivisions, many=True).data)
 
@@ -2656,9 +2672,7 @@ class BlueprintListView(APIView):
 
     def get(self, request):
         try:
-            blueprints = Blueprint.objects.prefetch_related('lots').all()
-            if role_name(request) != 'admin':
-                blueprints = blueprints.filter(status='published')
+            blueprints = map_visible_blueprints(request).prefetch_related('lots')
             return Response([blueprint_response_data(blueprint) for blueprint in blueprints])
         except ProgrammingError as error:
             if 'blueprints' in str(error).lower() and 'does not exist' in str(error).lower():

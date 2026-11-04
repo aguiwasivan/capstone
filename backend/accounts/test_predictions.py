@@ -11,6 +11,37 @@ from .demand_prediction import capture_observations, readiness, train_model, fea
 
 
 class PredictionTests(TestCase):
+    def test_pipeline_preserves_agent_threshold_and_pooled_unassigned_history(self):
+        converted = self.request(status='approved', assigned_agent=self.agent)
+        self.sale(converted)
+        # Duplicate sales still represent one converted reservation.
+        self.sale(converted)
+        for state in ('declined', 'rejected', 'cancelled', 'declined'):
+            self.request(status=state, assigned_agent=self.agent)
+        self.request(status='cancelled')
+        self.request(status='approved', assigned_agent=self.agent)
+        self.request(status='approved')
+        data = build_agent_sales_pipeline_forecast({})
+        rows = {row['agent_id']: row for row in data['agent_pipeline_forecasts']}
+        self.assertEqual(rows[self.agent.pk]['conversion_probability'], .2)
+        self.assertEqual(rows[self.agent.pk]['resolved_samples'], 5)
+        self.assertEqual(rows[self.agent.pk]['probability_basis'], 'Agent resolved reservations')
+        self.assertEqual(rows[None]['conversion_probability'], 1 / 6)
+        self.assertEqual(rows[None]['resolved_samples'], 6)
+        self.assertEqual(rows[None]['probability_basis'], 'All resolved reservations')
+
+    def test_demand_outcomes_keep_open_start_and_closed_end_boundaries(self):
+        from .demand_prediction import training_rows, HORIZON
+        now = timezone.now()
+        start = now - timedelta(days=90)
+        observation = LotDemandObservation.objects.create(
+            lot=self.lot, observed_at=start, observed_date=start.date(), features=features_for(self.lot))
+        request = self.request()
+        for offset, expected in ((timedelta(0), 0), (HORIZON, 1), (HORIZON + timedelta(microseconds=1), 0)):
+            ReservationRequest.objects.filter(pk=request.pk).update(created_at=start + offset)
+            with self.subTest(offset=offset):
+                self.assertEqual([(row.pk, label) for row, label in training_rows()], [(observation.pk, expected)])
+
     def test_compact_subdivision_options_skip_lots_and_blueprints(self):
         from django.test.utils import CaptureQueriesContext
         from django.db import connection

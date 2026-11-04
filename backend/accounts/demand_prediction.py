@@ -1,9 +1,11 @@
 """Thirty-day demand prediction from observed availability, without invented history."""
 import math
+from bisect import bisect_right
 from collections import defaultdict
 from datetime import timedelta
 
 from django.utils import timezone
+from django.db.models import Count
 
 from .models import AnalyticsPredictionModel, Lot, LotDemandObservation, ReservationRequest
 
@@ -24,11 +26,11 @@ def features_for(lot, recent_requests=0):
 def current_features(lots, now=None):
     now = now or timezone.now()
     counts = defaultdict(int)
-    for lot_id in ReservationRequest.objects.filter(
+    for row in ReservationRequest.objects.filter(
         lot_id__in=[lot.pk for lot in lots], created_at__gte=now-HORIZON,
         created_at__lte=now,
-    ).values_list('lot_id', flat=True):
-        counts[lot_id] += 1
+    ).order_by().values('lot_id').annotate(count=Count('id')):
+        counts[row['lot_id']] = row['count']
     return {lot.pk: features_for(lot, counts[lot.pk]) for lot in lots}
 
 
@@ -57,14 +59,17 @@ def training_rows():
         created_at__gt=observations[0].observed_at, created_at__lte=now,
     ).values_list('lot_id', 'created_at'):
         requests[lot_id].append(created)
+    for dates in requests.values():
+        dates.sort()
     # Nonoverlapping outcomes per lot prevent one request becoming many labels.
     last = {}
     rows = []
     for observation in observations:
         if observation.lot_id in last and observation.observed_at < last[observation.lot_id] + HORIZON:
             continue
-        label = int(any(observation.observed_at < when <= observation.observed_at + HORIZON
-                        for when in requests[observation.lot_id]))
+        dates = requests[observation.lot_id]
+        label = int(bisect_right(dates, observation.observed_at) <
+                    bisect_right(dates, observation.observed_at + HORIZON))
         rows.append((observation, label))
         last[observation.lot_id] = observation.observed_at
     return rows

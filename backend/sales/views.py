@@ -1,6 +1,8 @@
 from decimal import Decimal
 from datetime import datetime
 import math
+from functools import lru_cache
+from threading import RLock
 
 from django.db import transaction
 from django.db.models import Count, Sum
@@ -30,6 +32,9 @@ FORECAST_MIN_MONTHS = 6
 FORECAST_LIMITED_MONTHS = 11
 WALK_FORWARD_MIN_TRAIN_MONTHS = 6
 FORECAST_LAGS = 3
+WALK_FORWARD_MAX_POINTS = 12
+# Serialize cache misses within a worker; retain predictions, never fitted trees.
+_forecast_lock = RLock()
 
 
 def sale_has_status_field():
@@ -366,6 +371,12 @@ def pct_metric_to_string(value):
 def random_forest_predict_value(values):
     if RandomForestRegressor is None or len(values) < FORECAST_MIN_MONTHS:
         return None
+    with _forecast_lock:
+        return _cached_random_forest_predict_value(tuple(values))
+
+
+@lru_cache(maxsize=256)
+def _cached_random_forest_predict_value(values):
     try:
         numeric_values = [float(value) for value in values]
         if any(not math.isfinite(value) or value < 0 for value in numeric_values):
@@ -418,7 +429,10 @@ def walk_forward_validation(values, predict_fn):
     actual_values = []
     predicted_values = []
 
-    for index in range(WALK_FORWARD_MIN_TRAIN_MONTHS, len(values)):
+    # Evaluate the most recent year, retaining expanding training history and
+    # avoiding look-ahead. Full-history backtests grow by 100 trees per month.
+    start = max(WALK_FORWARD_MIN_TRAIN_MONTHS, len(values) - WALK_FORWARD_MAX_POINTS)
+    for index in range(start, len(values)):
         prediction = predict_fn(values[:index])
         if prediction is None:
             continue
@@ -561,6 +575,9 @@ def build_model_comparison_response(sales):
         limitation_message = (
             'Limited reliability: only an initial next-month forecast is available with fewer than 12 completed monthly records.'
         )
+    if month_count > WALK_FORWARD_MIN_TRAIN_MONTHS + WALK_FORWARD_MAX_POINTS:
+        limitation_message = ' '.join(filter(None, [limitation_message,
+            'Validation metrics cover the latest 12 completed holdout months using expanding training history.']))
 
     forecast = []
     if forest_next is not None:

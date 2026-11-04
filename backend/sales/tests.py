@@ -5,10 +5,34 @@ from unittest.mock import patch
 from rest_framework.test import APITestCase
 
 from accounts.models import SaleTransaction, User
-from .views import random_forest_predict_value, walk_forward_validation
+from .views import random_forest_predict_value, walk_forward_validation, _cached_random_forest_predict_value
 
 
 class SalesForecastViewTests(APITestCase):
+    def setUp(self):
+        _cached_random_forest_predict_value.cache_clear()
+
+    def test_identical_inputs_reuse_prediction_and_changed_inputs_retrain(self):
+        from sales.views import RandomForestRegressor
+        with patch('sales.views.RandomForestRegressor', wraps=RandomForestRegressor) as model:
+            values = list(range(6))
+            first = random_forest_predict_value(values)
+            self.assertEqual(first, random_forest_predict_value(values))
+            self.assertEqual(model.call_count, 1)
+            values[-1] = 100
+            random_forest_predict_value(values)
+            self.assertEqual(model.call_count, 2)
+
+    def test_long_validation_uses_latest_year_without_future_data(self):
+        seen = []
+        values = list(range(60))
+        def predict(prefix):
+            seen.append(prefix)
+            return prefix[-1]
+        metrics = walk_forward_validation(values, predict)
+        self.assertEqual(metrics['validation_points'], 12)
+        self.assertEqual(seen, [values[:index] for index in range(48, 60)])
+
     def history(self, count=8):
         return [
             {'month': f'2025-{month:02d}', 'total_sales': 100000 * month}
@@ -89,6 +113,21 @@ class SalesPredictionAnalyticsTests(APITestCase):
             total_contract_price=9999999,
         )
         self.client.force_authenticate(self.agent)
+
+    def test_prediction_cache_tracks_database_changes_and_analytics_stays_current(self):
+        _cached_random_forest_predict_value.cache_clear()
+        first = self.client.get('/api/sales-predictions/').data
+        misses = _cached_random_forest_predict_value.cache_info().misses
+        self.assertEqual(first, self.client.get('/api/sales-predictions/').data)
+        self.assertEqual(_cached_random_forest_predict_value.cache_info().misses, misses)
+        SaleTransaction.objects.filter(agent=self.agent, sale_date__month=8).update(total_contract_price=900000)
+        changed = self.client.get('/api/sales-predictions/').data
+        self.assertEqual(changed['history'][-1]['total_contract_price'], '900000.00')
+        self.assertGreater(_cached_random_forest_predict_value.cache_info().misses, misses)
+        analytics = self.client.get('/api/sales-analytics/')
+        self.assertEqual(analytics.status_code, 200)
+        self.assertEqual(analytics.data['summary']['total_sales'], 8)
+        self.assertEqual(analytics.data['summary']['total_contract_price'], Decimal('3700000'))
 
     def test_chart_metrics_and_forecast_use_random_forest_and_respect_scope(self):
         response = self.client.get('/api/sales-predictions/')
