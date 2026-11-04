@@ -1,0 +1,299 @@
+.lot-demand-analytics {
+  display: grid;
+  gap: 20px;
+}
+
+.zone-estimate-visual {
+  display: grid;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.zone-estimate-scale {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.zone-estimate-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) minmax(0, 2fr);
+  gap: 20px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--zone-color);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+.zone-estimate-value, .zone-estimate-label {
+  min-width: 0;
+}
+
+.zone-estimate-track {
+  height: 14px;
+  margin: 8px 0;
+  border-radius: 8px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.zone-estimate-fill {
+  height: 100%;
+  background: var(--zone-color);
+  border-radius: inherit;
+}
+
+.zone-estimate-empty {
+  background: repeating-linear-gradient(135deg, transparent, transparent 5px, var(--border) 5px, var(--border) 7px);
+}
+
+.zone-position-guide {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) auto;
+  gap: 6px;
+  align-items: center;
+}
+
+.zone-position-guide span {
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  font-weight: 600;
+}
+
+.zone-position-guide .zone-position-rear { background: #dbeafe; color: #1e40af; }
+.zone-position-guide .zone-position-central { background: #dcfce7; color: #166534; }
+.zone-position-guide .zone-position-front { background: #ffedd5; color: #9a3412; }
+
+@media (max-width: 640px) {
+  .zone-estimate-row { grid-template-columns: 1fr; gap: 12px; }
+  .zone-position-guide { grid-template-columns: repeat(3, 1fr); }
+  .zone-position-entrance { grid-column: 3; }
+}
+
+.lot-demand-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.lot-demand-filters label {
+  display: grid;
+  gap: 6px;
+  flex: 0 1 360px;
+  min-width: 0;
+  color: var(--text);
+}
+
+.lot-demand-filters select {
+  width: 100%;
+  min-width: 0;
+}
+
+.lot-demand-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.lot-demand-insight {
+  margin: 0;
+  padding: 12px;
+  background: var(--primary-soft);
+  border-radius: var(--radius-sm);
+  color: var(--primary-strong);
+}
+
+.lot-demand-zone-samples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  font-size: 13px;
+}
+
+.lot-demand-tooltip {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.lot-demand-tooltip p {
+  margin: 4px 0 0;
+}
+
+.lot-demand-top-zone strong {
+  font-size: 20px;
+  overflow-wrap: anywhere;
+}
+
+.lot-demand-state {
+  margin: 0;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.lot-demand-state.error {
+  border-color: #fecaca;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.lot-demand-mode-panel {
+  padding: 16px 18px;
+}
+
+.lot-demand-mode-panel p {
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.lot-demand-mode-panel strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.lot-demand-mode-panel span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.lot-demand-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.lot-demand-chart-card {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.lot-demand-chart-card h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.lot-demand-chart {
+  width: 100%;
+  height: 280px;
+}
+
+.lot-demand-table-panel {
+  min-width: 0;
+}
+
+.lot-demand-pagination-summary {
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.lot-demand-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 14px;
+}
+
+.lot-demand-pagination button {
+  min-width: 92px;
+  min-height: 38px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.lot-demand-pagination button:not(:disabled):hover {
+  border-color: var(--primary);
+  color: var(--primary-strong);
+}
+
+.lot-demand-pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.lot-demand-pagination span {
+  min-width: 96px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.lot-demand-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  border-radius: var(--radius-sm);
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.lot-demand-badge.high-demand {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.lot-demand-badge.moderate-demand {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.lot-demand-badge.low-demand {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+@media (max-width: 920px) {
+  .lot-demand-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .lot-demand-chart {
+    height: 240px;
+  }
+
+  .lot-demand-pagination {
+    justify-content: stretch;
+  }
+
+  .lot-demand-pagination button {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+/* CityFavor dashboard presentation refresh */
+/* Zone colors and widths continue to convey the original data. */
+.role-layout .lot-demand-filters { gap: 16px; padding: 18px; background: #f7faf7; border: 1px solid var(--border); border-radius: 12px; }
+.role-layout .lot-demand-filters label { font-size: 12px; }
+.role-layout .lot-demand-filters select { background: #fff; min-height: 44px; }
+.role-layout .zone-estimate-row { padding: 21px; box-shadow: var(--shadow-soft); border-radius: 12px; }
+.role-layout .zone-estimate-label { line-height: 1.8; }
+.role-layout .zone-position-guide span { font-size: 12px; padding: 12px; }
+.role-layout .lot-demand-note { font-size: 12px; line-height: 1.8; }
+@media (max-width: 600px) { .role-layout .lot-demand-filters { padding: 14px; }.role-layout .zone-estimate-row { padding: 17px; } }

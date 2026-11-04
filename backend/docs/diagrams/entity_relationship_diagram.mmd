@@ -1,0 +1,118 @@
+erDiagram
+    ACCOUNTS_USER {
+        bigint id PK
+        varchar username
+        varchar password
+        varchar first_name
+        varchar last_name
+        varchar email
+        varchar role
+        boolean is_active
+        boolean is_staff
+        boolean is_superuser
+        timestamptz last_login
+        timestamptz date_joined
+        varchar phone_number
+        date date_of_birth
+        varchar address_line1
+        varchar address_line2
+        varchar city
+        varchar province
+        varchar postal_code
+        varchar buyer_type
+        varchar preferred_contact_method
+        varchar payment_card_number
+        varchar payment_card_name
+        smallint payment_card_expiry_month
+        smallint payment_card_expiry_year
+    }
+
+    ACCOUNTS_SUBDIVISION {
+        bigint id PK
+        varchar name
+        text blueprint_data
+        jsonb blueprint_lots
+        timestamptz created_at
+    }
+
+    ACCOUNTS_LOT {
+        bigint id PK
+        bigint subdivision_id FK
+        varchar block
+        integer lot_number
+        integer area
+        numeric price
+        varchar status
+        jsonb polygon_points
+        text photo_data
+    }
+
+    ACCOUNTS_RESERVATIONREQUEST {
+        bigint id PK
+        bigint lot_id FK
+        bigint client_id FK
+        varchar status
+        bigint reviewed_by_id FK
+        timestamptz created_at
+        timestamptz reviewed_at
+    }
+
+    ACCOUNTS_NOTIFICATION {
+        bigint id PK
+        bigint user_id FK
+        bigint reservation_request_id FK
+        varchar title
+        text message
+        boolean is_read
+        timestamptz created_at
+    }
+
+    ACCOUNTS_SYSTEMPARAMETER {
+        bigint id PK
+        varchar key
+        varchar label
+        varchar value
+        text description
+        timestamptz updated_at
+    }
+
+    ACCOUNTS_SALETRANSACTION {
+        bigint id PK
+        bigint agent_id FK
+        bigint manager_id FK
+        bigint broker_id FK
+        bigint client_id FK
+        bigint lot_id FK
+        varchar developer
+        varchar project
+        date sale_date
+        numeric total_contract_price
+        numeric agent_commission
+        numeric manager_commission
+        numeric broker_commission
+        text notes
+        bigint created_by_id FK
+        timestamptz created_at
+    }
+
+    ACCOUNTS_HOUSERECOMMENDATIONHISTORY {
+        bigint id PK
+        bigint user_id FK
+        text reference_image_data
+        jsonb recommendations
+        timestamptz created_at
+    }
+
+    ACCOUNTS_SUBDIVISION ||--o{ ACCOUNTS_LOT : contains
+    ACCOUNTS_LOT ||--o{ ACCOUNTS_RESERVATIONREQUEST : receives
+    ACCOUNTS_USER ||--o{ ACCOUNTS_RESERVATIONREQUEST : submits
+    ACCOUNTS_USER ||--o{ ACCOUNTS_RESERVATIONREQUEST : reviews
+    ACCOUNTS_USER ||--o{ ACCOUNTS_NOTIFICATION : receives
+    ACCOUNTS_RESERVATIONREQUEST ||--o{ ACCOUNTS_NOTIFICATION : creates
+    ACCOUNTS_USER ||--o{ ACCOUNTS_SALETRANSACTION : assigned_agent
+    ACCOUNTS_USER ||--o{ ACCOUNTS_SALETRANSACTION : assigned_manager
+    ACCOUNTS_USER ||--o{ ACCOUNTS_SALETRANSACTION : assigned_broker
+    ACCOUNTS_USER ||--o{ ACCOUNTS_SALETRANSACTION : buyer
+    ACCOUNTS_USER ||--o{ ACCOUNTS_SALETRANSACTION : created_by
+    ACCOUNTS_LOT ||--o{ ACCOUNTS_SALETRANSACTION : sold_as
+    ACCOUNTS_USER ||--o{ ACCOUNTS_HOUSERECOMMENDATIONHISTORY : owns

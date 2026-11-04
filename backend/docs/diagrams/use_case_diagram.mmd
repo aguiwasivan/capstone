@@ -1,0 +1,136 @@
+flowchart LR
+    Admin[Admin]
+    Manager[Manager]
+    Broker[Broker]
+    Agent[Agent]
+    Client[Client]
+
+    subgraph AccountModule["Authentication and Account"]
+        UC1([Register client account])
+        UC2([Login and receive JWT tokens])
+        UC3([View and update profile])
+        UC4([Change password])
+        UC5([Manage system users])
+    end
+
+    subgraph LotModule["Subdivision and Lot Management"]
+        UC6([Upload subdivision blueprint])
+        UC7([Map blueprint lots])
+        UC8([Browse interactive lot map])
+        UC9([Update lot details])
+        UC10([Update lot status])
+        UC11([Upload lot photo])
+        UC12([Delete subdivision])
+    end
+
+    subgraph ReservationModule["Reservation and Notification"]
+        UC13([Request lot reservation])
+        UC14([Review reservation requests])
+        UC15([Approve reservation])
+        UC16([Decline reservation])
+        UC17([View reservation notifications])
+    end
+
+    subgraph SalesModule["Sales and Reports"]
+        UC18([Record sales transaction])
+        UC19([View sales transactions])
+        UC20([View sales analytics])
+        UC21([Generate sales predictions])
+        UC22([Generate monthly sales forecast])
+        UC23([View sales report])
+    end
+
+    subgraph ListingModule["Property Listings"]
+        UC24([Create local property listing])
+        UC25([Browse local property listings])
+        UC26([Request local listing reservation])
+        UC27([Review local listing reservation])
+    end
+
+    subgraph SettingsModule["System Settings"]
+        UC28([Manage system parameters])
+    end
+
+    subgraph AIHouseModule["AI House Recommendation"]
+        UC29([Generate AI house image])
+        UC30([View house recommendation history])
+    end
+
+    Admin --- UC2
+    Admin --- UC3
+    Admin --- UC4
+    Admin --- UC5
+    Admin --- UC6
+    Admin --- UC7
+    Admin --- UC8
+    Admin --- UC9
+    Admin --- UC10
+    Admin --- UC11
+    Admin --- UC12
+    Admin --- UC17
+    Admin --- UC18
+    Admin --- UC19
+    Admin --- UC20
+    Admin --- UC21
+    Admin --- UC22
+    Admin --- UC23
+    Admin --- UC24
+    Admin --- UC28
+    Admin --- UC30
+
+    Manager --- UC2
+    Manager --- UC3
+    Manager --- UC4
+    Manager --- UC8
+    Manager --- UC14
+    Manager --- UC15
+    Manager --- UC16
+    Manager --- UC17
+    Manager --- UC19
+    Manager --- UC20
+    Manager --- UC21
+    Manager --- UC22
+    Manager --- UC25
+    Manager --- UC27
+
+    Broker --- UC2
+    Broker --- UC3
+    Broker --- UC4
+    Broker --- UC8
+    Broker --- UC14
+    Broker --- UC15
+    Broker --- UC16
+    Broker --- UC17
+    Broker --- UC19
+    Broker --- UC20
+    Broker --- UC21
+    Broker --- UC22
+    Broker --- UC25
+    Broker --- UC27
+
+    Agent --- UC2
+    Agent --- UC3
+    Agent --- UC4
+    Agent --- UC8
+    Agent --- UC14
+    Agent --- UC15
+    Agent --- UC16
+    Agent --- UC17
+    Agent --- UC19
+    Agent --- UC20
+    Agent --- UC21
+    Agent --- UC22
+    Agent --- UC25
+    Agent --- UC27
+
+    Client --- UC1
+    Client --- UC2
+    Client --- UC3
+    Client --- UC4
+    Client --- UC8
+    Client --- UC13
+    Client --- UC17
+    Client --- UC25
+    Client --- UC26
+    Client --- UC29
+    Client --- UC30

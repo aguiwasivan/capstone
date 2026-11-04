@@ -1,0 +1,346 @@
+.ui-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.ui-page-header h1 {
+  margin: 0 0 8px;
+  color: var(--text);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.ui-page-header p {
+  max-width: 720px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.ui-page-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ui-summary-card {
+  position: relative;
+  min-height: 132px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.ui-summary-icon {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+  font-weight: 600;
+}
+
+.ui-summary-card p {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.ui-summary-card strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.ui-summary-card span:not(.ui-summary-icon) {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.ui-status-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  max-width: 100%;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 5px 10px;
+  color: var(--muted);
+  background: var(--surface-muted);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.ui-status-badge.status-available,
+.ui-status-badge.status-approved,
+.ui-status-badge.status-completed,
+.ui-status-badge.status-closed,
+.ui-status-badge.status-paid {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.ui-status-badge.status-reserved,
+.ui-status-badge.status-pending,
+.ui-status-badge.status-unpaid {
+  border-color: #fde68a;
+  background: #fffbeb;
+  color: #92400e;
+}
+
+.ui-status-badge.status-sold,
+.ui-status-badge.status-declined,
+.ui-status-badge.status-rejected,
+.ui-status-badge.status-cancelled,
+.ui-status-badge.status-canceled {
+  border-color: #fecaca;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.ui-empty-state {
+  display: grid;
+  place-items: center;
+  min-height: 190px;
+  padding: 28px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  text-align: center;
+}
+
+.ui-empty-icon {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 12px;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+  font-weight: 600;
+}
+
+.ui-empty-state h2 {
+  margin: 0 0 8px;
+  color: var(--text);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.ui-empty-state p {
+  max-width: 460px;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.ui-empty-action {
+  margin-top: 16px;
+}
+
+.ui-loading-state {
+  display: flex;
+  min-height: 140px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.ui-spinner {
+  width: 22px;
+  height: 22px;
+  border: 3px solid #d1fae5;
+  border-top-color: var(--primary);
+  border-radius: 999px;
+  animation: ui-spin 0.85s linear infinite;
+}
+
+@keyframes ui-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ui-toast {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+  padding: 13px 15px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+  font-weight: 500;
+}
+
+.ui-toast-success {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.ui-toast-error {
+  border-color: #fecaca;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.ui-toast button {
+  min-height: 34px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.72);
+  color: inherit;
+  padding: 0 10px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.ui-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.ui-confirm-modal {
+  width: min(440px, 100%);
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.22);
+}
+
+.ui-confirm-modal h2 {
+  margin: 0 0 8px;
+  color: var(--text);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.ui-confirm-modal p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.ui-modal-actions,
+.ui-table-pagination,
+.ui-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ui-modal-actions {
+  justify-content: flex-end;
+  margin-top: 22px;
+}
+
+.ui-button,
+.ui-table-pagination button {
+  min-height: 42px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 0 14px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.ui-button-primary {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.ui-button-secondary,
+.ui-table-pagination button {
+  border-color: var(--border-strong);
+  background: #ffffff;
+  color: var(--text);
+}
+
+.ui-button-danger {
+  background: var(--danger);
+  color: #ffffff;
+}
+
+.ui-table-pagination {
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.ui-table-pagination span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.ui-table-pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.ui-filter-bar {
+  margin-bottom: 16px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
+
+/* CityFavor dashboard presentation refresh */
+/* Consistent UI primitives; existing status semantics and messages stay intact. */
+.role-layout .ui-page-header { padding-bottom: 23px; margin-bottom: 25px; border-bottom: 1px solid var(--border); gap: 18px; }
+.role-layout .ui-page-header > div { min-width: 0; }
+.role-layout .ui-page-header h1 { color: var(--primary-strong); font-size: clamp(24px, 2.4vw, 30px); letter-spacing: -.75px; font-weight: 650; }
+.role-layout .ui-page-header p { font-size: 13px; line-height: 1.75; }
+.role-layout .ui-summary-card { min-width: 0; min-height: 142px; padding: 23px; border-radius: var(--radius); border-top: 3px solid #b7d9c1; }
+.role-layout .ui-summary-card > p { padding-right: 32px; font-size: 11px; line-height: 1.7; }
+.role-layout .ui-summary-card strong { font-size: clamp(24px, 2.5vw, 31px); color: var(--primary-strong); letter-spacing: -.7px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.role-layout .ui-summary-icon { background: #edf8ef; border: 1px solid #dceee0; border-radius: 10px; }
+.role-layout .ui-status-badge { font-size: 11px; min-height: 27px; padding: 6px 10px; line-height: 1.25; }
+.role-layout .ui-empty-state { border-color: var(--border-strong); background: linear-gradient(145deg, #fff, #f8fcf9); padding: 34px 24px; }
+.role-layout .ui-empty-state h2 { font-size: 19px; color: var(--primary-strong); }
+.role-layout .ui-empty-state p { font-size: 13px; line-height: 1.8; }
+.role-layout .ui-loading-state { color: var(--muted); font-size: 13px; }
+.role-layout .ui-toast { box-shadow: var(--shadow); border-radius: 12px; font-size: 13px; }
+.role-layout .ui-confirm-modal { padding: 28px; border-radius: 16px; box-shadow: 0 24px 70px rgba(20,83,45,.18); max-height: calc(100dvh - 40px); overflow-y: auto; }
+.role-layout .ui-modal-actions { padding-top: 20px; gap: 10px; }
+.role-layout :is(.ui-filter-bar, .ui-table-pagination) { gap: 12px; }
+.role-layout .ui-confirm-modal h2 { color: var(--primary-strong); font-size: 19px; }
+@media (max-width: 600px) { .role-layout .ui-summary-card { padding: 19px; }.role-layout .ui-page-actions { width: 100%; }.role-layout .ui-page-actions > * { max-width: 100%; } }

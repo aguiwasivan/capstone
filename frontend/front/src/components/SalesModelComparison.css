@@ -1,0 +1,66 @@
+.sales-forecast-panel { min-width: 0; display: grid; gap: 24px; align-content: start; }
+.sales-forecast-panel * { box-sizing: border-box; }
+.sales-forecast-heading, .sales-forecast-chart-heading { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: flex-start; }
+.sales-forecast-heading > div, .sales-forecast-chart-heading > div { min-width: 0; }
+.sales-forecast-panel .sales-forecast-heading h2 { margin: 4px 0 8px; }
+.sales-forecast-heading p, .sales-forecast-chart-heading p { margin: 0; color: var(--muted, #64748b); line-height: 1.6; }
+.sales-forecast-panel .sales-forecast-eyebrow { color: #15803d; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; }
+.sales-forecast-model { border: 1px solid #bbf7d0; background: #f0fdf4; color: #166534; padding: 7px 12px; border-radius: 999px; font-size: 12px; }
+.sales-forecast-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.sales-forecast-stat { min-width: 0; padding: 18px; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; background: var(--surface, #fff); }
+.sales-forecast-stat.forecast { background: #fff7ed; border-color: #fed7aa; }
+.sales-forecast-stat p { margin: 0 0 10px; font-size: 12px; color: var(--muted, #64748b); }
+.sales-forecast-stat strong { display: block; font-size: clamp(18px, 2vw, 25px); font-weight: 650; line-height: 1.35; color: var(--text, #0f172a); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.sales-forecast-stat span { display: block; margin-top: 8px; font-size: 12px; color: var(--muted, #64748b); line-height: 1.5; }
+.sales-forecast-chart-card { min-width: 0; border: 1px solid var(--border, #e2e8f0); border-radius: 12px; padding: 20px; }
+.sales-forecast-chart-heading h3, .sales-forecast-summary h3 { margin: 0 0 8px; font-size: 16px; line-height: 1.5; }
+.sales-forecast-chart-heading p { font-size: 12px; }
+.sales-forecast-legend { display: flex; flex-wrap: wrap; gap: 12px 20px; font-size: 12px; color: var(--text, #0f172a); }
+.sales-forecast-legend span { display: inline-flex; align-items: center; gap: 8px; }
+.sales-forecast-legend i { width: 24px; border-top: 3px solid #15803d; }
+.sales-forecast-legend i.forecast { border-top: 3px dashed #ea580c; }
+.sales-forecast-chart { width: 100%; min-width: 0; height: 340px; margin-top: 20px; }
+.sales-forecast-tooltip { padding: 12px 16px; background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 6px 24px #0f172a15; font-size: 12px; max-width: 260px; }
+.sales-forecast-tooltip p { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-between; margin: 10px 0 0; }
+.sales-forecast-tooltip b { overflow-wrap: anywhere; }
+.sales-forecast-panel .sales-forecast-data-note { color: var(--muted, #64748b); font-size: 12px; line-height: 1.7; margin: 12px 0 0; }
+.sales-forecast-summary { min-width: 0; height: auto; padding: 20px; border: 1px solid #bbf7d0; border-radius: 12px; background: #f8fcf9; overflow-wrap: anywhere; }
+.sales-forecast-summary p { margin: 12px 0 0; line-height: 1.75; font-size: 14px; }
+.sales-forecast-summary-lead { font-weight: 600; color: var(--text, #0f172a); }
+.sales-forecast-validation { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 20px 0; }
+.sales-forecast-validation div { min-width: 0; }
+.sales-forecast-validation dt { color: var(--muted, #64748b); font-size: 11px; margin-bottom: 6px; }
+.sales-forecast-validation dd { margin: 0; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.sales-forecast-limitation { border-left: 3px solid #f59e0b; padding-left: 12px; }
+.sales-forecast-empty { padding: 32px 0; color: var(--muted, #64748b); }
+.sales-forecast-data { margin-top: 16px; font-size: 12px; }
+.sales-forecast-data summary { cursor: pointer; color: #166534; padding: 8px 0; }
+.sales-forecast-table-wrap { overflow-x: auto; }
+.sales-forecast-data table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.sales-forecast-data th, .sales-forecast-data td { text-align: left; padding: 10px; border-bottom: 1px solid var(--border, #e2e8f0); white-space: nowrap; }
+.sales-forecast-data caption { text-align: left; padding: 12px 0; color: var(--muted, #64748b); }
+@media (max-width: 700px) {
+  .sales-forecast-stats { grid-template-columns: 1fr; }
+  .sales-forecast-chart-card, .sales-forecast-summary { padding: 14px; }
+  .sales-forecast-chart { height: 290px; }
+  .sales-forecast-panel { padding: 16px; gap: 18px; }
+}
+@media (max-width: 400px) {
+  .sales-forecast-validation { grid-template-columns: 1fr; }
+  .sales-forecast-chart-card { padding: 10px 0; }
+  .sales-forecast-chart-heading, .sales-forecast-data-note, .sales-forecast-data { margin-left: 10px; margin-right: 10px; }
+}
+
+/* CityFavor dashboard presentation refresh */
+/* Chart data, series colors, legend meanings and plot dimensions are retained. */
+.role-layout .sales-forecast-chart-card { background: #fff; padding: 24px; border-radius: 14px; }
+.role-layout .sales-forecast-heading h2 { color: var(--primary-strong); }
+.role-layout .sales-forecast-chart-heading { padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.role-layout .sales-forecast-chart-heading h3 { font-size: 17px; }
+.role-layout .sales-forecast-stat { padding: 21px; border-radius: 12px; box-shadow: var(--shadow-soft); }
+.role-layout .sales-forecast-stat strong { letter-spacing: -.5px; }
+.role-layout .sales-forecast-tooltip { border-color: var(--border); border-radius: 12px; padding: 15px 17px; box-shadow: var(--shadow); color: var(--text); }
+.role-layout .sales-forecast-summary { background: #f7fbf8; border-color: #cee6d5; padding: 25px; border-radius: 14px; }
+.role-layout .sales-forecast-validation { gap: 18px; padding-block: 16px; border-block: 1px solid var(--border); }
+@media (max-width: 700px) { .role-layout .sales-forecast-chart-card, .role-layout .sales-forecast-summary { padding: 17px; }.role-layout .sales-forecast-stat { padding: 18px; } }
+@media (max-width: 400px) { .role-layout .sales-forecast-chart-card { padding-inline: 0; } }

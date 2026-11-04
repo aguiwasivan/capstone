@@ -1,0 +1,80 @@
+flowchart LR
+    Admin[Admin]
+    Staff[Agent, Manager, Broker]
+    Client[Client]
+    OpenAI[OpenAI Image API]
+
+    P1([1.0 Authenticate and Manage Session])
+    P2([2.0 Manage Users and Profiles])
+    P3([3.0 Manage Subdivisions, Blueprints, and Lots])
+    P4([4.0 Handle Reservations and Notifications])
+    P5([5.0 Manage Sales, Analytics, Forecasts, and Reports])
+    P6([6.0 Generate AI House Recommendations])
+    P7([7.0 Manage Local Property Listings])
+
+    D1[(accounts_user)]
+    D2[(accounts_subdivision and accounts_lot)]
+    D3[(accounts_reservationrequest and accounts_notification)]
+    D4[(accounts_saletransaction)]
+    D5[(accounts_systemparameter)]
+    D6[(accounts_houserecommendationhistory)]
+    D7[(browser localStorage)]
+
+    Admin -->|credentials| P1
+    Staff -->|credentials| P1
+    Client -->|registration data and credentials| P1
+    P1 -->|JWT tokens and user payload| Admin
+    P1 -->|JWT tokens and user payload| Staff
+    P1 -->|JWT tokens and user payload| Client
+    P1 <-->|user authentication data| D1
+    P1 <-->|tokens and saved user| D7
+
+    Admin -->|create, update, disable, delete users and system parameters| P2
+    Staff -->|profile updates and password changes| P2
+    Client -->|profile updates and password changes| P2
+    P2 <-->|user and profile records| D1
+    P2 <-->|system parameter records| D5
+    P2 -->|profile summaries and user lists| Admin
+    P2 -->|profile data| Staff
+    P2 -->|profile data| Client
+
+    Admin -->|subdivision blueprint, mapped lots, lot status, lot photos| P3
+    Staff -->|lot map requests| P3
+    Client -->|lot map requests| P3
+    P3 <-->|subdivision and lot records| D2
+    P3 -->|interactive blueprint map and lot details| Admin
+    P3 -->|interactive blueprint map and lot details| Staff
+    P3 -->|interactive blueprint map and lot details| Client
+
+    Client -->|lot reservation request| P4
+    Staff -->|approve or decline reservation| P4
+    Admin -->|notification and reservation requests| P4
+    P4 <-->|reservation and notification records| D3
+    P4 <-->|lot status updates| D2
+    P4 -->|reservation status and notifications| Client
+    P4 -->|reservation queue and notifications| Staff
+    P4 -->|reservation and notification data| Admin
+
+    Admin -->|sales transaction data and report requests| P5
+    Staff -->|sales dashboard and forecast requests| P5
+    P5 <-->|sales transaction records| D4
+    P5 <-->|user assignments| D1
+    P5 <-->|lot references| D2
+    P5 -->|sales records, analytics, forecasts, reports| Admin
+    P5 -->|assigned sales, analytics, forecasts| Staff
+
+    Client -->|house requirements or prompt| P6
+    Admin -->|history request| P6
+    P6 -->|generation prompt| OpenAI
+    OpenAI -->|generated image| P6
+    P6 <-->|recommendation history records| D6
+    P6 -->|AI house image and history| Client
+    P6 -->|recommendation history| Admin
+
+    Admin -->|local listing details| P7
+    Client -->|local listing reservation request| P7
+    Staff -->|local listing review action| P7
+    P7 <-->|property listing records| D7
+    P7 -->|local listing cards and statuses| Admin
+    P7 -->|local listing cards and statuses| Staff
+    P7 -->|local listing cards and statuses| Client

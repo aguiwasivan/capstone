@@ -1,0 +1,119 @@
+.client-shell {
+  flex: 1;
+  display: flex;
+  min-width: 0;
+  height: 100vh;
+  min-height: 100vh;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.client-topbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.92);
+  padding: 16px 32px;
+  backdrop-filter: blur(12px);
+}
+
+.client-topbar h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.client-main-content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: var(--bg);
+  padding: 32px;
+  box-sizing: border-box;
+}
+
+.client-sidebar-group {
+  display: grid;
+  gap: 6px;
+}
+
+.client-sidebar-group summary {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  color: #d7e1ec;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  list-style: none;
+}
+
+.client-sidebar-group summary::-webkit-details-marker {
+  display: none;
+}
+
+.client-sidebar-group summary::after {
+  content: "v";
+  margin-left: auto;
+  font-size: 11px;
+}
+
+.client-sidebar-group[open] summary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.client-sidebar-group .role-sidebar-link {
+  margin-left: 12px;
+  min-height: 38px;
+}
+
+@media (max-width: 900px) {
+  .client-shell {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .client-topbar {
+    min-height: 72px;
+    padding: 18px 24px 18px 76px;
+  }
+
+  .client-topbar h3 {
+    font-size: 20px;
+  }
+
+  .client-main-content {
+    min-height: auto;
+    overflow: visible;
+    padding: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .client-topbar {
+    padding: 18px 16px 18px 72px;
+  }
+
+  .client-main-content {
+    padding: 20px 16px;
+  }
+}
+
+
+
+/* CityFavor dashboard presentation refresh */
+/* The customer shell shares the workspace navigation and existing client header. */
+.role-layout .client-shell { height: 100dvh; min-height: 100dvh; }
+.role-layout .client-topbar { min-height: 76px; padding: 21px 36px; background: #fff; border-bottom-color: var(--border); box-shadow: 0 1px 8px rgba(20,83,45,.025); }
+.role-layout .client-topbar h3 { font-size: 17px; font-weight: 600; letter-spacing: -.3px; color: var(--primary-strong); }
+.role-layout .client-main-content { padding: 32px 36px 44px; background: var(--bg); }
+@media (max-width: 900px) { .role-layout .client-shell { height: auto; }.role-layout .client-topbar { min-height: 74px; padding: 22px 24px 22px 76px; }.role-layout .client-main-content { padding: 25px 24px 30px; } }
+@media (max-width: 480px) { .role-layout .client-topbar { padding-inline: 74px 16px; }.role-layout .client-main-content { padding: 22px 16px 28px; } }

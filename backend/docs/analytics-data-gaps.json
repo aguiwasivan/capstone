@@ -1,0 +1,867 @@
+{
+  "ambiguous_map_records": [
+    {
+      "id": "950d9382-2029-42b7-b940-2c274a0dfde8",
+      "blueprint__title": "COTTA",
+      "block_number": "",
+      "lot_number": "Lot 3",
+      "status": "available"
+    },
+    {
+      "id": "52a11329-9b71-456b-9de7-e8dd20fafffb",
+      "blueprint__title": "COTTA",
+      "block_number": "",
+      "lot_number": "Lot 3",
+      "status": "available"
+    },
+    {
+      "id": "de66a3f3-455d-4dab-9ae6-f8033de48bb3",
+      "blueprint__title": "COTTA",
+      "block_number": "",
+      "lot_number": "Lot 3",
+      "status": "available"
+    },
+    {
+      "id": "f26b29c0-cb51-45e0-8c0a-01b910f7ded0",
+      "blueprint__title": "COTTA",
+      "block_number": "",
+      "lot_number": "Lot 4",
+      "status": "reserved"
+    },
+    {
+      "id": "bb552426-3d3f-4230-9742-c0e05665f957",
+      "blueprint__title": "COTTA",
+      "block_number": "",
+      "lot_number": "Lot 4",
+      "status": "reserved"
+    },
+    {
+      "id": "97b2c049-427f-449c-a4c7-d70c3bc459f4",
+      "blueprint__title": "COTTA",
+      "block_number": "",
+      "lot_number": "Lot 4",
+      "status": "reserved"
+    },
+    {
+      "id": "81842f1e-878c-465c-908f-7e6a4bdd957a",
+      "blueprint__title": "COTTA",
+      "block_number": "",
+      "lot_number": "Lot 4",
+      "status": "reserved"
+    },
+    {
+      "id": "44b2aa63-9214-4fe2-aae8-6349be946846",
+      "blueprint__title": "COTTA",
+      "block_number": "",
+      "lot_number": "Lot 5",
+      "status": "available"
+    },
+    {
+      "id": "1361d425-237e-460f-9988-31d349102343",
+      "blueprint__title": "COTTA",
+      "block_number": "",
+      "lot_number": "Lot 5",
+      "status": "available"
+    },
+    {
+      "id": "62f00640-5818-4e2a-b2ac-cfcd660d49dd",
+      "blueprint__title": "COTTA",
+      "block_number": "",
+      "lot_number": "Lot 5",
+      "status": "available"
+    },
+    {
+      "id": "f0876e23-b329-4374-adca-fbe984b979e2",
+      "blueprint__title": "COTTA",
+      "block_number": "",
+      "lot_number": "Lot 5",
+      "status": "available"
+    },
+    {
+      "id": "6525af30-f90c-4040-81d1-612c3171c63b",
+      "blueprint__title": "COTTA",
+      "block_number": "",
+      "lot_number": "Lot 6",
+      "status": "available"
+    },
+    {
+      "id": "7f43b1c1-a4ce-44d7-8e65-2577fae0f788",
+      "blueprint__title": "COTTA",
+      "block_number": "",
+      "lot_number": "Lot 6",
+      "status": "available"
+    },
+    {
+      "id": "dd2e236a-78cd-4668-8bdd-980f7e69a6fc",
+      "blueprint__title": "COTTA",
+      "block_number": "2",
+      "lot_number": "1",
+      "status": "sold"
+    },
+    {
+      "id": "4dfc9cc5-fa65-442e-a0a7-a3211ecd44f9",
+      "blueprint__title": "COTTA",
+      "block_number": "1",
+      "lot_number": "7",
+      "status": "available"
+    },
+    {
+      "id": "e23db768-1d97-4025-a67d-6d30ee94413c",
+      "blueprint__title": "COTTA",
+      "block_number": "1",
+      "lot_number": "7",
+      "status": "available"
+    },
+    {
+      "id": "fe0582e9-afb7-4e90-9b31-8431f30bdd99",
+      "blueprint__title": "COTTA",
+      "block_number": "2",
+      "lot_number": "6",
+      "status": "sold"
+    },
+    {
+      "id": "dfdd327a-1553-4571-ae1e-10f78e34263d",
+      "blueprint__title": "COTTA",
+      "block_number": "2",
+      "lot_number": "4",
+      "status": "sold"
+    },
+    {
+      "id": "27e34966-defb-4b15-9b08-388e3e8f406f",
+      "blueprint__title": "COTTA",
+      "block_number": "2",
+      "lot_number": "1",
+      "status": "sold"
+    },
+    {
+      "id": "8847207d-5c61-40cb-bec2-caacc06a6ed8",
+      "blueprint__title": "COTTA",
+      "block_number": "2",
+      "lot_number": "4",
+      "status": "sold"
+    },
+    {
+      "id": "ac3b709c-fb4d-48f8-947c-f157a3dc6b4e",
+      "blueprint__title": "COTTA",
+      "block_number": "2",
+      "lot_number": "6",
+      "status": "sold"
+    },
+    {
+      "id": "f880808c-ab7e-4078-be44-941a3595a8f6",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 1",
+      "status": "reserved"
+    },
+    {
+      "id": "41745594-3cfa-4596-8030-78cfe6802f3b",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 3",
+      "status": "available"
+    },
+    {
+      "id": "0dea8400-696f-4483-9a63-d4284ccde2b6",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 4",
+      "status": "available"
+    },
+    {
+      "id": "48110dd2-3c69-4bbe-9a6c-7a8128bc160d",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 4",
+      "status": "available"
+    },
+    {
+      "id": "3920a889-fc33-475e-b480-c063c460d4f5",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 6",
+      "status": "available"
+    },
+    {
+      "id": "ad50b07c-73dc-4318-bc53-03d41610616d",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 6",
+      "status": "available"
+    },
+    {
+      "id": "c614dc00-e027-4026-8206-8b3760d47229",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 4",
+      "status": "available"
+    },
+    {
+      "id": "cb4b5486-6c88-45d5-af1e-6bc4d4d418fc",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 7",
+      "status": "available"
+    },
+    {
+      "id": "2479c13e-b730-4fdf-b50f-bbee07596058",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 3",
+      "status": "available"
+    },
+    {
+      "id": "2fbda86d-cf83-4992-b01f-dfc23aa13dae",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 3",
+      "status": "available"
+    },
+    {
+      "id": "9f08d314-c3a4-44da-a0f5-09897a593e41",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 14",
+      "status": "available"
+    },
+    {
+      "id": "fb64eee8-c94b-417a-891d-1ae631e14c72",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 3",
+      "status": "available"
+    },
+    {
+      "id": "ecf0aa9b-bac0-4313-9f6b-ec47693c9273",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 3",
+      "status": "available"
+    },
+    {
+      "id": "03091fbe-9876-4688-bf0e-42d9bc0c9dc6",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 4",
+      "status": "available"
+    },
+    {
+      "id": "020a854e-6d59-44c1-bc37-f18a5b8ce33e",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 3",
+      "status": "available"
+    },
+    {
+      "id": "c4b3d45e-ce1b-409d-b3db-f6ce2aa9c948",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 4",
+      "status": "available"
+    },
+    {
+      "id": "5d9ceace-8429-42f5-8488-248165275088",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 4",
+      "status": "available"
+    },
+    {
+      "id": "605cecd8-7dfd-4021-8ed6-6434aea0e5a1",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 7",
+      "status": "available"
+    },
+    {
+      "id": "59befd16-d699-4fe7-84f2-58241950a650",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 8",
+      "status": "available"
+    },
+    {
+      "id": "4effd1a0-c22f-45cd-80f4-a34d995e49d3",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 4",
+      "status": "available"
+    },
+    {
+      "id": "e5283a90-5dec-43c5-a4e0-e358ecdc3718",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 4",
+      "status": "available"
+    },
+    {
+      "id": "492a710e-e825-4ffc-bc09-552879f0448d",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 4",
+      "status": "available"
+    },
+    {
+      "id": "2df80bb8-b58f-4a03-8306-b00285db2db1",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 1",
+      "status": "reserved"
+    },
+    {
+      "id": "0da19fd7-949e-4974-b6b1-d52b21a6cd09",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 5",
+      "status": "available"
+    },
+    {
+      "id": "536731d6-6842-4145-ac54-9580112141f9",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 8",
+      "status": "available"
+    },
+    {
+      "id": "ec7fd1f1-4bd5-40c8-be65-db18fbeb884b",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 5",
+      "status": "available"
+    },
+    {
+      "id": "03815655-94d1-470d-9afe-f79eb5bbb2bf",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 5",
+      "status": "available"
+    },
+    {
+      "id": "efa44a52-1f0a-43e9-8a52-8322976b9e57",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 8",
+      "status": "available"
+    },
+    {
+      "id": "f79f7aec-76c9-4621-ba1b-733bc3f9779f",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 5",
+      "status": "available"
+    },
+    {
+      "id": "4f603cf1-cb8b-4d7e-953b-1c1daf0ce53d",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 8",
+      "status": "available"
+    },
+    {
+      "id": "3c36311b-ad16-4b42-8677-2211d001637a",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 5",
+      "status": "available"
+    },
+    {
+      "id": "c0933bcd-3a9d-40be-acd8-019c7f067a6d",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 5",
+      "status": "available"
+    },
+    {
+      "id": "8a08e305-ea1d-4720-8b33-eee58bcfb055",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 10",
+      "status": "available"
+    },
+    {
+      "id": "1f32d437-555e-4dc7-b3a9-ad094eed0113",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 9",
+      "status": "available"
+    },
+    {
+      "id": "6e7b8d9f-0c4f-4c91-8470-75792b7ff878",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 9",
+      "status": "available"
+    },
+    {
+      "id": "d1d9693d-9647-44c4-9746-362aa34e816f",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 9",
+      "status": "available"
+    },
+    {
+      "id": "9fe06270-76cc-4af3-b942-a54650e0fada",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 9",
+      "status": "available"
+    },
+    {
+      "id": "1209fc0d-d708-4980-8487-c4d2cbbc22c9",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 16",
+      "status": "available"
+    },
+    {
+      "id": "5a2e665a-ac9c-4d69-b53d-b7759502ea41",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 12",
+      "status": "available"
+    },
+    {
+      "id": "e2ebf942-0a68-4093-a548-6cd5b25310f2",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 16",
+      "status": "available"
+    },
+    {
+      "id": "a657d52e-9b2f-4626-b3a0-0a7a9d9bc870",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 15",
+      "status": "available"
+    },
+    {
+      "id": "249e09cc-9582-436b-961c-f7e7997ec6d4",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 11",
+      "status": "reserved"
+    },
+    {
+      "id": "951b0739-963e-4890-b1e8-8b74bae53e63",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 11",
+      "status": "reserved"
+    },
+    {
+      "id": "ae0ccbb1-641b-469a-9c35-6219f0f65d93",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 10",
+      "status": "available"
+    },
+    {
+      "id": "0555e84f-e8ae-4b00-b9f2-a64079d333bd",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 10",
+      "status": "available"
+    },
+    {
+      "id": "a102b7ec-0596-4b9c-be74-99b9bd99190a",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 9",
+      "status": "available"
+    },
+    {
+      "id": "190a3db6-85b3-42ce-95f3-bb30a2150cb4",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 12",
+      "status": "pending"
+    },
+    {
+      "id": "1fdd7b29-bf6a-4ff9-841e-958a4bf7c043",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 11",
+      "status": "reserved"
+    },
+    {
+      "id": "8d11d08d-1662-44b4-8e35-6a4153596862",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 11",
+      "status": "reserved"
+    },
+    {
+      "id": "bd5a8fcf-9191-4a79-9c9e-132d413c7a37",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 9",
+      "status": "available"
+    },
+    {
+      "id": "a03720c9-3b2a-4813-94a5-4b3af30a1704",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 9",
+      "status": "available"
+    },
+    {
+      "id": "1adafe2b-e340-4975-9d8a-62dfa8939b69",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 11",
+      "status": "reserved"
+    },
+    {
+      "id": "04f49250-db27-4375-ab7b-1106e963fba7",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 11",
+      "status": "reserved"
+    },
+    {
+      "id": "5c3ece0e-5ca7-4acb-bc8c-2bb9fb0a9003",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 13",
+      "status": "available"
+    },
+    {
+      "id": "313b57ec-6856-4ffc-9870-7955ab14515d",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 11",
+      "status": "reserved"
+    },
+    {
+      "id": "8a3d976f-947f-43b0-a7d0-9b8c863bb68d",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 15",
+      "status": "available"
+    },
+    {
+      "id": "8998fc1a-b3d6-4baa-a37c-064d382ba23b",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 15",
+      "status": "available"
+    },
+    {
+      "id": "6514a5d6-fb81-4346-a9e0-374895c331c4",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 13",
+      "status": "available"
+    },
+    {
+      "id": "e60202c0-c173-4ab0-a54a-357a7b5a4459",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 13",
+      "status": "available"
+    },
+    {
+      "id": "f6d2dc39-b91b-444c-a52e-4cebf77fab7b",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 15",
+      "status": "available"
+    },
+    {
+      "id": "4ce69499-29a6-45aa-ac65-313085ca5de2",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 14",
+      "status": "available"
+    },
+    {
+      "id": "9e61b962-07d6-4aad-b9ad-c2013a505eda",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 14",
+      "status": "available"
+    },
+    {
+      "id": "72039420-0a68-415f-9c7d-f800545cba9f",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 16",
+      "status": "available"
+    },
+    {
+      "id": "de41db32-1ab3-46c9-890e-70437918d09b",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 14",
+      "status": "available"
+    },
+    {
+      "id": "7ece5b13-0f3e-4fde-a492-4afce050a4d1",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 15",
+      "status": "available"
+    },
+    {
+      "id": "0c7f03ba-6148-4222-bd4e-ddaebc049952",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 16",
+      "status": "available"
+    },
+    {
+      "id": "60b45697-6490-4180-8f5d-a38baa164240",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 14",
+      "status": "available"
+    },
+    {
+      "id": "6afac5e1-e44f-44b7-b99e-aa1d6354e06b",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 14",
+      "status": "available"
+    },
+    {
+      "id": "394d14a3-9dd6-4621-9907-6a84dc623cc8",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 14",
+      "status": "available"
+    },
+    {
+      "id": "0d5a5990-1939-4de6-8f70-528b561af192",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 14",
+      "status": "available"
+    },
+    {
+      "id": "291ca7ed-5f93-406f-b500-949495ca08c3",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 15",
+      "status": "available"
+    },
+    {
+      "id": "9087cfb1-4b2f-4b04-9d18-4333e54c7606",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 16",
+      "status": "available"
+    },
+    {
+      "id": "b4ab2f16-a76d-428f-8398-b27efe03e292",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 14",
+      "status": "available"
+    },
+    {
+      "id": "e8b8e94e-7c69-482f-8400-f32a4fe4d521",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 14",
+      "status": "available"
+    },
+    {
+      "id": "7e2fedbc-c868-425a-a532-48e0199092d0",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 15",
+      "status": "available"
+    },
+    {
+      "id": "d42e4244-fc75-4984-834b-ad39c1004c5c",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 15",
+      "status": "available"
+    },
+    {
+      "id": "8fc3ef66-5a08-41e6-8b8a-69cb5e7cbb89",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 14",
+      "status": "available"
+    },
+    {
+      "id": "b03a597c-509f-4e01-8d5b-a8506c4b890e",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 15",
+      "status": "available"
+    },
+    {
+      "id": "f0b252cf-698b-440f-8532-fd57fff1cfcc",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 16",
+      "status": "available"
+    },
+    {
+      "id": "f2ce84d1-fb71-46ed-bd3e-cbd5c71652b2",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 15",
+      "status": "available"
+    },
+    {
+      "id": "af6caf50-138e-4a6e-af6f-85e40101b8f8",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 15",
+      "status": "available"
+    },
+    {
+      "id": "a796dc9c-e401-483a-917a-2d889a479e5d",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 15",
+      "status": "available"
+    },
+    {
+      "id": "23b762b4-87e5-44d8-b4aa-10b1c5febf2b",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 16",
+      "status": "available"
+    },
+    {
+      "id": "0146f05e-844c-4302-b891-7ae011b08fbe",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 15",
+      "status": "available"
+    },
+    {
+      "id": "9c1afa83-c23a-4f0e-ac1d-bf577e1e6fcb",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 16",
+      "status": "available"
+    },
+    {
+      "id": "93d4b953-f4d4-442c-9a7d-d03578fe457f",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 16",
+      "status": "available"
+    },
+    {
+      "id": "74d0460a-b031-4baf-9c47-940e393d6cfb",
+      "blueprint__title": "ST. JUDE",
+      "block_number": "",
+      "lot_number": "Lot 16",
+      "status": "available"
+    }
+  ],
+  "sales_missing_analytics_links": [
+    {
+      "id": 80,
+      "project": "Northview Heights",
+      "sale_date": "2024-03-09",
+      "lot_id": null,
+      "agent_id": null
+    },
+    {
+      "id": 79,
+      "project": "Palm Ridge Estates",
+      "sale_date": "2024-02-15",
+      "lot_id": null,
+      "agent_id": null
+    },
+    {
+      "id": 78,
+      "project": "Green Meadows Subdivision",
+      "sale_date": "2024-01-20",
+      "lot_id": null,
+      "agent_id": null
+    },
+    {
+      "id": 77,
+      "project": "Sunrise Valley",
+      "sale_date": "2023-12-12",
+      "lot_id": null,
+      "agent_id": null
+    },
+    {
+      "id": 76,
+      "project": "Northview Heights",
+      "sale_date": "2023-11-23",
+      "lot_id": null,
+      "agent_id": null
+    },
+    {
+      "id": 75,
+      "project": "Palm Ridge Estates",
+      "sale_date": "2023-10-05",
+      "lot_id": null,
+      "agent_id": null
+    },
+    {
+      "id": 74,
+      "project": "Green Meadows Subdivision",
+      "sale_date": "2023-09-16",
+      "lot_id": null,
+      "agent_id": null
+    },
+    {
+      "id": 73,
+      "project": "Sunrise Valley",
+      "sale_date": "2023-08-08",
+      "lot_id": null,
+      "agent_id": null
+    },
+    {
+      "id": 72,
+      "project": "Sunrise Valley",
+      "sale_date": "2023-07-19",
+      "lot_id": null,
+      "agent_id": null
+    },
+    {
+      "id": 71,
+      "project": "Northview Heights",
+      "sale_date": "2023-06-27",
+      "lot_id": null,
+      "agent_id": null
+    },
+    {
+      "id": 70,
+      "project": "Northview Heights",
+      "sale_date": "2023-05-11",
+      "lot_id": null,
+      "agent_id": null
+    },
+    {
+      "id": 69,
+      "project": "Palm Ridge Estates",
+      "sale_date": "2023-04-22",
+      "lot_id": null,
+      "agent_id": null
+    },
+    {
+      "id": 68,
+      "project": "Palm Ridge Estates",
+      "sale_date": "2023-03-14",
+      "lot_id": null,
+      "agent_id": null
+    },
+    {
+      "id": 67,
+      "project": "Green Meadows Subdivision",
+      "sale_date": "2023-02-09",
+      "lot_id": null,
+      "agent_id": null
+    },
+    {
+      "id": 66,
+      "project": "Green Meadows Subdivision",
+      "sale_date": "2023-01-18",
+      "lot_id": null,
+      "agent_id": null
+    }
+  ]
+}

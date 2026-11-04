@@ -1,0 +1,68 @@
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p8
+*.p12
+*.jks
+
+# Dependencies
+node_modules/
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+
+# Django
+db.sqlite3
+db.sqlite3-*
+staticfiles/
+*.log
+
+# React / Expo
+dist/
+build/
+.expo/
+web-build/
+.next/
+coverage/
+
+# Generated files
+*.tsbuildinfo
+.cache/
+.pytest_cache/
+
+# IDE and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Nested Git metadata
+backend/.git/
+frontend/.git/
+mobile/.git/
+
+# Local Node.js installation tools
+/node.exe
+/npm
+/npm.cmd
+/npm.ps1
+/npx
+/npx.cmd
+/npx.ps1
+/corepack
+/corepack.cmd
+/nodevars.bat
+/install_tools.bat
+
+# Local Git metadata backups
+/mobile-git-backup/
+/mobile-git-original/
+
+# Temporary analytics working files and audit reports
+/frontend/.analytics-work/
+/frontend/.cleanup-audit/

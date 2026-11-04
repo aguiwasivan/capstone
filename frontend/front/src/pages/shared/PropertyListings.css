@@ -1,0 +1,237 @@
+.property-listings-page {
+  color: var(--text);
+}
+
+.property-listings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.property-listings-header h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  letter-spacing: 0;
+}
+
+.property-listings-header p,
+.property-listing-form-panel p,
+.property-listing-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.property-type-select {
+  display: grid;
+  gap: 6px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.property-type-select span {
+  color: var(--primary);
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.property-type-select select,
+.property-listing-form input,
+.property-listing-form textarea {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  padding: 10px 12px;
+}
+
+.property-listing-form-panel {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 22px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.property-listing-form-panel h2 {
+  margin: 0 0 6px;
+  font-size: 20px;
+}
+
+.property-listing-message {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: #ecfdf5;
+  color: var(--primary-strong);
+  font-weight: 500;
+}
+
+.property-listing-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.property-listing-form label {
+  display: grid;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.property-listing-form textarea {
+  resize: vertical;
+}
+
+.property-form-wide {
+  grid-column: 1 / -1;
+}
+
+.property-listing-form button,
+.property-listing-card button {
+  justify-self: start;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: #ffffff;
+  padding: 11px 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.property-listing-card button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.property-reserved-status {
+  justify-self: start;
+  border-radius: var(--radius-sm);
+  background: #fef3c7;
+  color: #92400e !important;
+  padding: 7px 9px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.property-reserved-status.reserved {
+  background: #dcfce7;
+  color: #166534 !important;
+}
+
+.property-review-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.property-review-actions button:last-child {
+  background: #b91c1c;
+}
+
+.property-listing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.property-listing-card {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.property-listing-card img,
+.property-listing-placeholder {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--surface-muted);
+}
+
+.property-listing-placeholder {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.property-listing-card-body {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+}
+
+.property-listing-card-body span {
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.property-listing-card h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.property-listing-card strong {
+  color: var(--text);
+  font-size: 20px;
+}
+
+.property-listing-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.property-listing-meta b {
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  padding: 7px 9px;
+  color: var(--text);
+  font-size: 12px;
+}
+
+.property-listing-empty {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 18px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  background: var(--surface);
+}
+
+@media (max-width: 760px) {
+  .property-listing-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+/* CityFavor dashboard presentation refresh */
+.role-layout .property-listings-header { padding-bottom: 23px; margin-bottom: 25px; border-bottom: 1px solid var(--border); }
+.role-layout .property-listings-header h1 { color: var(--primary-strong); font-size: clamp(24px, 2.4vw, 30px); letter-spacing: -.7px; }
+.role-layout .property-listings-header p { font-size: 13px; }
+.role-layout .property-listing-form-panel { padding: 25px; border-radius: var(--radius); }
+.role-layout .property-listing-form { gap: 20px; }
+.role-layout .property-listing-form label { font-size: 12px; }
+.role-layout .property-listing-grid { gap: 24px; }
+.role-layout .property-listing-card { border-radius: var(--radius); box-shadow: var(--shadow-soft); transition: box-shadow .2s ease; }
+.role-layout .property-listing-card:hover { box-shadow: var(--shadow); }
+.role-layout .property-listing-card-body { padding: 23px; }
+.role-layout .property-listing-card h2 { font-size: 20px; color: var(--primary-strong); }
+.role-layout .property-listing-card strong { color: var(--primary-strong); font-variant-numeric: tabular-nums; }
+.role-layout .property-listing-card p { font-size: 13px; line-height: 1.85; overflow-wrap: anywhere; }
+.role-layout .property-listing-meta { gap: 12px; padding-top: 15px; border-top: 1px solid var(--border); }
+.role-layout .property-listing-empty { padding: 32px; border-radius: var(--radius); background: #fbfdfb; }
+@media (max-width: 600px) { .role-layout .property-listing-form-panel { padding: 19px; }.role-layout .property-listing-card-body { padding: 20px; }.role-layout .property-listing-grid { gap: 18px; } }

@@ -1,0 +1,14 @@
+# Local verification, recovery archives, and development audit output
+/.auth-verification/
+/.branding-verification/
+/.cleanup-*/
+/.dashboard-ui-review/
+/.landing-verification/
+/.analytics-work/
+/.expo-network-fix*
+/cleanup-git-before.txt
+/cleanup_safe_review.py
+
+# Local data exports and recovery data
+/cotta-zone-backup.json
+/analytics_audit_live.json

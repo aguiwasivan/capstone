@@ -1,0 +1,28 @@
+.analytics-skeleton { min-height: 420px; animation: analytics-content-in .2s ease-out; }
+.analytics-skeleton-message { color: #475569; margin: 0 0 14px; }
+.analytics-skeleton-cards, .analytics-skeleton-charts { display: grid; gap: 16px; }
+.analytics-skeleton-cards { grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); }
+.analytics-skeleton-charts { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-top: 20px; }
+.analytics-skeleton-card, .analytics-skeleton-chart, .analytics-skeleton-table { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 18px; overflow: hidden; }
+.analytics-skeleton-card { min-height: 112px; }
+.analytics-skeleton-chart { min-height: 300px; }
+.analytics-skeleton-line, .analytics-skeleton-chart-body, .analytics-skeleton-table span { display: block; border-radius: 8px; background: linear-gradient(90deg, #e8edf3 25%, #f8fafc 50%, #e8edf3 75%); background-size: 200% 100%; animation: analytics-shimmer 1.4s ease-in-out infinite; }
+.analytics-skeleton-line { height: 12px; margin-bottom: 14px; }
+.analytics-skeleton-line.short { width: 45%; }
+.analytics-skeleton-line.value { width: 65%; height: 28px; }
+.analytics-skeleton-chart-body { height: 225px; margin-top: 24px; }
+.analytics-skeleton-table { margin-top: 20px; }
+.analytics-skeleton-table span { height: 34px; margin: 10px 0; }
+.analytics-section-content { animation: analytics-content-in .2s ease-out; }
+.analytics-section-error { min-height: 220px; display: grid; place-content: center; justify-items: center; gap: 12px; text-align: center; }
+.analytics-retry-button { border: 0; border-radius: 9px; padding: 10px 18px; background: #15803d; color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+@keyframes analytics-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+@keyframes analytics-content-in { from { opacity: .35; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .analytics-skeleton-line, .analytics-skeleton-chart-body, .analytics-skeleton-table span, .analytics-section-content { animation: none; } }
+@media (max-width: 640px) { .analytics-skeleton-charts { grid-template-columns: 1fr; } .analytics-skeleton-chart { min-height: 250px; } }
+
+/* CityFavor dashboard presentation refresh */
+.role-layout :is(.analytics-skeleton-card, .analytics-skeleton-chart, .analytics-skeleton-table) { background: #fff; border-color: var(--border); border-radius: var(--radius); box-shadow: var(--shadow-soft); }
+.role-layout :is(.analytics-skeleton-line, .analytics-skeleton-chart-body, .analytics-skeleton-table span) { background-image: linear-gradient(90deg, #e9f0eb 25%, #f8fbf9 50%, #e9f0eb 75%); }
+.role-layout .analytics-skeleton-message { color: var(--muted); font-size: 13px; }
+.role-layout .analytics-skeleton-charts { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }

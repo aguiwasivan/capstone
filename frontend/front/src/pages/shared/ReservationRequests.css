@@ -1,0 +1,141 @@
+.reservation-requests {
+  color: var(--text);
+}
+
+.request-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.request-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-soft);
+}
+
+.request-list {
+  display: grid;
+  gap: 14px;
+}
+
+.request-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 18px;
+}
+
+.request-card h2 {
+  margin: 10px 0 8px;
+  font-size: 20px;
+}
+
+.request-approved {
+  margin-top: 10px !important;
+  color: var(--primary-strong) !important;
+  font-weight: 600;
+}
+
+.request-client-contact {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+}
+
+.request-contact-title {
+  margin-bottom: 8px !important;
+  color: var(--text) !important;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.request-contact-links {
+  display: flex;
+  gap: 8px 18px;
+  flex-wrap: wrap;
+}
+
+.request-contact-links a,
+.request-contact-links span {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.request-contact-links a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.request-contact-links a:hover {
+  text-decoration: underline;
+}
+
+.request-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.request-view-only {
+  align-self: center;
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-muted);
+  color: var(--muted);
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.request-card button {
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #ffffff;
+  padding: 11px 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.request-accept-button {
+  background: var(--primary);
+}
+
+.request-decline-button {
+  background: var(--red);
+}
+
+.request-card button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+@media (max-width: 760px) {
+  .request-card {
+    flex-direction: column;
+  }
+}
+
+
+
+/* CityFavor dashboard presentation refresh */
+.role-layout .request-list { gap: 18px; }
+.role-layout .request-card { padding: 24px; border-radius: var(--radius); gap: 22px; }
+.role-layout .request-card > div { min-width: 0; }
+.role-layout .request-card h2 { color: var(--primary-strong); font-size: 19px; }
+.role-layout .request-card p { font-size: 13px; line-height: 1.8; overflow-wrap: anywhere; }
+.role-layout .request-client-contact { background: #f6faf7; padding: 15px 16px; border-radius: 10px; }
+.role-layout .request-contact-links :is(a, span) { font-size: 12px; overflow-wrap: anywhere; }
+.role-layout .request-actions { gap: 9px; }
+.role-layout .request-actions button { min-height: 40px; border-radius: 8px; }
+@media (max-width: 700px) { .role-layout .request-card { flex-direction: column; padding: 20px; }.role-layout .request-actions { justify-content: flex-start; width: 100%; } }

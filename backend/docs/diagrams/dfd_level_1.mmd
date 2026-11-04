@@ -1,0 +1,197 @@
+flowchart TB
+    Admin[Admin]
+    Staff[Agent, Manager, Broker]
+    Client[Client]
+    OpenAI[OpenAI Image API]
+
+    D1[(accounts_user)]
+    D2[(accounts_subdivision)]
+    D3[(accounts_lot)]
+    D4[(accounts_reservationrequest)]
+    D5[(accounts_notification)]
+    D6[(accounts_saletransaction)]
+    D7[(accounts_systemparameter)]
+    D8[(accounts_houserecommendationhistory)]
+    D9[(browser localStorage)]
+
+    subgraph Authentication["1.0 Authentication and Session"]
+        P11([1.1 Register client account])
+        P12([1.2 Login with username or email])
+        P13([1.3 Refresh JWT access token])
+        P14([1.4 Store or clear local session])
+    end
+
+    subgraph UserProfile["2.0 User, Profile, and Settings"]
+        P21([2.1 Create staff or admin-managed user])
+        P22([2.2 Update, disable, or delete user])
+        P23([2.3 Load profile dashboard data])
+        P24([2.4 Update profile])
+        P25([2.5 Change password])
+        P26([2.6 Manage system parameters])
+    end
+
+    subgraph LotBlueprint["3.0 Subdivision Blueprint and Lot Management"]
+        P31([3.1 Load subdivisions and lots])
+        P32([3.2 Upload subdivision blueprint])
+        P33([3.3 Save mapped blueprint lots])
+        P34([3.4 Update lot details])
+        P35([3.5 Mark lot reserved, occupied, or available])
+        P36([3.6 Upload lot photo])
+        P37([3.7 Delete subdivision])
+    end
+
+    subgraph ReservationFlow["4.0 Reservation and Notification Flow"]
+        P41([4.1 Submit lot reservation request])
+        P42([4.2 Reject duplicate or unavailable requests])
+        P43([4.3 Set lot status to pending])
+        P44([4.4 Notify staff roles])
+        P45([4.5 Load reservation queue])
+        P46([4.6 Approve reservation])
+        P47([4.7 Decline reservation])
+        P48([4.8 Notify client of decision])
+    end
+
+    subgraph SalesReports["5.0 Sales and Reporting"]
+        P51([5.1 Load sales transactions])
+        P52([5.2 Create sales transaction])
+        P53([5.3 Update or delete sales transaction])
+        P54([5.4 Calculate sales analytics])
+        P55([5.5 Generate sales predictions])
+        P56([5.6 Generate monthly sales forecast])
+        P57([5.7 Generate sales report])
+    end
+
+    subgraph AIHouse["6.0 AI House Recommendation"]
+        P61([6.1 Validate client house request])
+        P62([6.2 Build image prompt])
+        P63([6.3 Request image generation])
+        P64([6.4 Return generated image])
+        P65([6.5 Save or load recommendation history])
+    end
+
+    subgraph LocalListings["7.0 Local Property Listings"]
+        P71([7.1 Save listing to browser storage])
+        P72([7.2 Browse sale and rent listings])
+        P73([7.3 Mark listing reservation pending])
+        P74([7.4 Approve or decline local listing reservation])
+    end
+
+    Client -->|registration form| P11
+    P11 -->|new client user| D1
+    Admin -->|credentials| P12
+    Staff -->|credentials| P12
+    Client -->|credentials| P12
+    P12 <-->|username, email, password, role| D1
+    P12 -->|JWT tokens and user payload| P14
+    P13 <-->|refresh token| D9
+    P13 -->|new access token| P14
+    P14 <-->|access token, refresh token, user payload| D9
+
+    Admin -->|staff account data| P21
+    P21 -->|new managed user| D1
+    Admin -->|user changes| P22
+    P22 <-->|managed user record| D1
+    Admin -->|profile summary request| P23
+    Staff -->|profile request| P23
+    Client -->|profile request| P23
+    P23 <-->|user records| D1
+    P23 <-->|reservation activity| D4
+    P23 <-->|sales activity| D6
+    P23 <-->|notification activity| D5
+    Admin -->|profile changes| P24
+    Staff -->|profile changes| P24
+    Client -->|profile changes| P24
+    P24 -->|updated profile fields| D1
+    Admin -->|password change| P25
+    Staff -->|password change| P25
+    Client -->|password change| P25
+    P25 -->|new password hash| D1
+    Admin -->|parameter data| P26
+    P26 <-->|parameter records| D7
+
+    Admin -->|subdivision and lot requests| P31
+    Staff -->|lot map request| P31
+    Client -->|lot map request| P31
+    P31 <-->|subdivision records| D2
+    P31 <-->|lot records| D3
+    Admin -->|blueprint image and subdivision name| P32
+    P32 -->|created or updated subdivision| D2
+    Admin -->|mapped polygon lot list| P33
+    P33 -->|created, updated, or removed lot rows| D3
+    P33 -->|blueprint_lots JSON| D2
+    Admin -->|lot details| P34
+    P34 -->|updated lot row| D3
+    Admin -->|status action| P35
+    P35 -->|lot status| D3
+    P35 -->|reject pending requests when needed| D4
+    Client -->|lot photo data| P36
+    P36 -->|photo_data| D3
+    Admin -->|delete subdivision request| P37
+    P37 -->|delete subdivision and related lots| D2
+
+    Client -->|lot_id| P41
+    P41 -->|availability and duplicate check| P42
+    P42 <-->|existing lot and pending request data| D3
+    P42 <-->|existing reservation data| D4
+    P42 -->|valid request| P43
+    P43 -->|pending lot status| D3
+    P43 -->|new reservation request| D4
+    P43 -->|staff notification data| P44
+    P44 -->|new notifications| D5
+    Admin -->|reservation list request| P45
+    Staff -->|reservation list request| P45
+    Client -->|own reservation list request| P45
+    P45 <-->|reservation records| D4
+    Staff -->|approve action| P46
+    P46 -->|approved request and reviewer| D4
+    P46 -->|reserved lot status| D3
+    P46 -->|reject other pending requests for lot| D4
+    Staff -->|decline action| P47
+    P47 -->|rejected request and reviewer| D4
+    P47 -->|available lot status when no approval exists| D3
+    P46 -->|client approval notification| P48
+    P47 -->|client decline notification| P48
+    P48 -->|client notification| D5
+
+    Admin -->|sales list request| P51
+    Staff -->|assigned sales list request| P51
+    P51 <-->|sales records| D6
+    P51 <-->|user assignments| D1
+    Admin -->|new sale data| P52
+    P52 -->|sale transaction with creator| D6
+    Admin -->|sale changes| P53
+    Staff -->|assigned sale changes| P53
+    P53 <-->|sale transaction record| D6
+    Admin -->|analytics request| P54
+    Staff -->|analytics request| P54
+    P54 <-->|sales aggregates| D6
+    Admin -->|prediction request| P55
+    Staff -->|prediction request| P55
+    P55 <-->|historical sales| D6
+    Admin -->|monthly history rows| P56
+    Staff -->|monthly history rows| P56
+    P56 -->|linear regression forecast| Admin
+    P56 -->|linear regression forecast| Staff
+    Admin -->|report request| P57
+    P57 <-->|report transactions and summary| D6
+
+    Client -->|house fields or custom prompt| P61
+    P61 -->|validated request data| P62
+    P62 -->|image prompt| P63
+    P63 -->|OpenAI request| OpenAI
+    OpenAI -->|generated image data| P64
+    P64 -->|image URL and model| Client
+    Client -->|reference image data| P65
+    Admin -->|history request| P65
+    P65 <-->|history records| D8
+
+    Admin -->|listing form data| P71
+    P71 -->|listing JSON| D9
+    Admin -->|listing view request| P72
+    Staff -->|listing view request| P72
+    Client -->|listing view request| P72
+    P72 <-->|listing JSON| D9
+    Client -->|reserve listing action| P73
+    P73 -->|pending listing status| D9
+    Staff -->|review local listing action| P74
+    P74 -->|reserved or available listing status| D9

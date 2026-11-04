@@ -1,0 +1,99 @@
+.analytics-dashboard {
+  display: grid;
+  gap: 24px;
+}
+
+.analytics-tabs-panel {
+  padding: 18px;
+}
+
+.analytics-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.analytics-tabs button {
+  min-height: 42px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-muted);
+  color: var(--text);
+  padding: 0 14px;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.analytics-tabs button.active,
+.analytics-tabs button:hover {
+  border-color: var(--primary);
+  background: #dcfce7;
+  color: var(--primary-strong);
+}
+
+.analytics-section {
+  display: grid;
+  gap: 20px;
+}
+
+.analytics-section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.analytics-section-heading span {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  min-width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  background: #dcfce7;
+  color: var(--primary-strong);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.analytics-section-heading h2 {
+  margin: 0 0 6px;
+  font-size: 22px;
+}
+
+.analytics-section-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+@media (max-width: 640px) {
+  .analytics-section-heading {
+    padding: 14px;
+  }
+
+  .analytics-tabs button {
+    width: 100%;
+  }
+}
+
+
+/* CityFavor dashboard presentation refresh */
+.role-layout .analytics-dashboard { gap: 24px; min-width: 0; }
+.role-layout .analytics-tabs-panel { padding: 8px; border-radius: 12px; background: #fff; }
+.role-layout .analytics-tabs { gap: 6px; }
+.role-layout .analytics-tabs button { background: transparent; border-color: transparent; min-height: 42px; padding-inline: 18px; font-size: 12px; }
+.role-layout .analytics-tabs button.active { background: var(--primary); color: #fff; border-color: var(--primary); box-shadow: 0 2px 5px rgba(20,83,45,.08); }
+.role-layout .analytics-tabs button:not(.active):hover { background: #f0f8f2; color: var(--primary-strong); }
+.role-layout .analytics-section-heading { padding: 22px; border-left-width: 3px; box-shadow: var(--shadow-soft); }
+.role-layout .analytics-section-heading h2 { font-size: 20px; color: var(--primary-strong); }
+.role-layout .analytics-section-heading p { font-size: 13px; line-height: 1.75; }
+.role-layout .analytics-section-heading > span { border: 1px solid #dceee0; background: #edf8ef; }
+@media (max-width: 640px) { .role-layout .analytics-tabs button { width: auto; flex: 1 1 140px; }.role-layout .analytics-section-heading { padding: 17px; } }

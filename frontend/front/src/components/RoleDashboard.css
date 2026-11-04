@@ -1,0 +1,459 @@
+.role-dashboard {
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+.dashboard-sales-content {
+  margin-top: 24px;
+}
+
+.role-dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.role-dashboard-header h1 {
+  margin: 0 0 8px;
+  color: var(--text);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.role-dashboard-header h2 {
+  margin: 0 0 8px;
+  color: var(--text);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+.role-dashboard-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.role-dashboard-header button {
+  border: none;
+  min-height: 48px;
+  border-radius: 12px;
+  background: var(--primary);
+  color: #ffffff;
+  padding: 0 18px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.role-dashboard-header button:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
+.role-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 16px;
+}
+
+.role-stat-card,
+.role-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+.role-stat-card {
+  padding: 24px;
+}
+
+.role-stat-card p {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.role-stat-card strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.role-stat-card span {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.role-dashboard-panels {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.8fr);
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.role-panel {
+  padding: 24px;
+}
+
+.role-panel h2 {
+  margin: 0 0 16px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.projected-sales-card {
+  grid-column: 1 / -1;
+}
+
+.sales-model-comparison-panel {
+  grid-column: 1 / -1;
+  margin-top: 0;
+}
+
+.projected-sales-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.projected-sales-header h2 {
+  margin: 0 0 6px;
+}
+
+.projected-sales-header p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.trend-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.trend-badge.increasing {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.trend-badge.decreasing {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.projected-sales-value {
+  margin-bottom: 16px;
+  color: var(--text);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.projected-sales-formula {
+  margin: -6px 0 16px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.projected-sales-chart {
+  height: 280px;
+  min-height: 280px;
+}
+
+.monthly-sales-chart {
+  height: 220px;
+  min-height: 220px;
+  margin-bottom: 16px;
+}
+
+.pipeline-list {
+  display: grid;
+  gap: 12px;
+}
+
+.pipeline-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--surface-muted);
+}
+
+.pipeline-item span,
+.action-list {
+  color: var(--muted);
+}
+
+.pipeline-item strong {
+  color: var(--primary-strong);
+}
+
+.action-list {
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.8;
+}
+
+.sales-dashboard-empty {
+  margin: 0;
+  color: var(--muted);
+}
+
+.properties-panel {
+  margin-top: 24px;
+}
+
+.properties-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.properties-panel-header h2 {
+  margin: 0 0 6px;
+}
+
+.properties-panel-header p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.properties-panel-header button {
+  border: none;
+  min-height: 48px;
+  border-radius: 12px;
+  background: var(--primary);
+  color: #ffffff;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.report-month-filter {
+  display: grid;
+  gap: 6px;
+  min-width: 190px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.report-transaction-actions {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.report-month-filter span {
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.report-month-filter select {
+  min-height: 44px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0 38px 0 12px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.report-month-filter select:focus {
+  border-color: var(--primary);
+  outline: 3px solid rgba(21, 128, 61, 0.14);
+}
+
+.lot-status-message {
+  margin: 0 0 14px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #ecfdf5;
+  color: var(--primary-strong);
+  font-weight: 600;
+}
+
+.properties-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.properties-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.properties-table th,
+.properties-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+.properties-table th {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  background: var(--surface-muted);
+}
+
+.properties-table td {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.properties-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.property-status {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.property-status.available {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.property-status.reserved {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.property-status.pending {
+  background: #ffedd5;
+  color: #9a3412;
+}
+
+.property-status.occupied {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.reserved-client-name {
+  display: block;
+  font-weight: 500;
+}
+
+.reserved-reviewer {
+  display: block;
+  margin-top: 4px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.lot-action-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.lot-action-button {
+  border: none;
+  min-height: 40px;
+  border-radius: 12px;
+  color: #ffffff;
+  padding: 0 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.lot-action-button.reserve {
+  background: var(--blue);
+}
+
+.lot-action-button.occupied {
+  background: var(--red);
+}
+
+.lot-action-button.unoccupied {
+  background: var(--primary);
+}
+
+.lot-action-button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+@media (max-width: 760px) {
+  .role-dashboard-panels {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+/* CityFavor dashboard presentation refresh */
+/* Shared overview, management tables and reporting surfaces. */
+.role-layout .role-dashboard-header { gap: 20px; padding: 0 0 24px; margin-bottom: 26px; border-bottom: 1px solid var(--border); }
+.role-layout .role-dashboard-header h1 { font-size: clamp(24px, 2.4vw, 30px); letter-spacing: -.75px; font-weight: 650; color: var(--primary-strong); }
+.role-layout .role-dashboard-header p { max-width: 780px; font-size: 13px; line-height: 1.75; }
+.role-layout .role-stat-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 18px; }
+.role-layout .role-stat-card { position: relative; padding: 23px 24px; border-radius: var(--radius); border-top: 3px solid #b7d9c1; }
+.role-layout .role-stat-card p { font-size: 10px; font-weight: 600; letter-spacing: .065em; line-height: 1.6; }
+.role-layout .role-stat-card strong { font-size: clamp(24px, 2.5vw, 32px); color: var(--primary-strong); letter-spacing: -.8px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.role-layout .role-stat-card > span { font-size: 12px; line-height: 1.65; }
+.role-layout .role-panel { min-width: 0; padding: 25px; border-radius: var(--radius); }
+.role-layout .role-panel h2 { font-size: 18px; font-weight: 600; letter-spacing: -.35px; }
+.role-layout .role-dashboard-panels { gap: 22px; }
+.role-layout :is(.properties-panel-header, .projected-sales-header) { gap: 16px; margin-bottom: 22px; }
+.role-layout :is(.properties-panel-header, .projected-sales-header) p { font-size: 13px; line-height: 1.7; }
+.role-layout .properties-table-wrap { border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+.role-layout .properties-table { border: 0; border-radius: 0; }
+.role-layout .properties-table :is(th, td) { padding: 15px 18px; }
+.role-layout .properties-table th { background: #f1f6f2; font-size: 10px; letter-spacing: .06em; }
+.role-layout .properties-table td { font-size: 13px; }
+.role-layout .properties-table tbody tr:last-child td { border-bottom: 0; }
+.role-layout .pipeline-item { padding: 15px 16px; border: 1px solid var(--border); background: #f7faf7; }
+.role-layout :is(.report-month-filter select, .properties-panel-header button) { min-height: 44px; }
+.role-layout .projected-sales-value { color: var(--primary-strong); letter-spacing: -.8px; font-variant-numeric: tabular-nums; }
+.role-layout .action-list { font-size: 13px; line-height: 2; }
+@media (max-width: 1100px) { .role-layout .role-dashboard-panels { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { .role-layout .role-panel { padding: 18px; }.role-layout .role-stat-card { padding: 20px; }.role-layout .role-dashboard-header { margin-bottom: 20px; }.role-layout .role-stat-grid { gap: 12px; } }

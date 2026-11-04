@@ -1,0 +1,10 @@
+export type Role = 'admin' | 'manager' | 'broker' | 'agent' | 'client';
+export type User = { id: number; username: string; first_name: string; last_name: string; email: string; role: Role };
+export type Tokens = { access: string; refresh: string };
+export type Lot = { id: number; subdivision_name?: string; block: string; lot_number: number; area: number; price: string; status: string; photo_data?: string; location_url?: string };
+export type BlueprintLot = { id: string; block_number: string; lot_number: string; area_sqm?: string; size?: string; price?: string; status: string; location_url?: string };
+export type Blueprint = { id: string; title: string; status: string; display_url?: string; image_url?: string; lots: BlueprintLot[] };
+export type Property = { key: string; reservationId: number | string; title: string; subdivision: string; block: string; number: string; area: number; price: number; status: string; image?: string; location?: string; needsReview: boolean };
+export type Reservation = { id: number; lot: Lot; client: number; client_username: string; status: string; created_at: string; reviewed_at?: string; reviewed_by_username?: string };
+export type Notice = { id: number; title: string; message: string; is_read: boolean; created_at: string };
+export type Snapshot = { properties: Property[]; reservations: Reservation[]; notices: Notice[] };

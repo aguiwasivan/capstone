@@ -1,0 +1,34 @@
+flowchart LR
+    Admin[Admin]
+    Manager[Manager]
+    Broker[Broker]
+    Agent[Agent]
+    Client[Client]
+    OpenAI[OpenAI Image API]
+    Database[(PostgreSQL Database)]
+    BrowserStorage[(Browser localStorage)]
+    System((Web-Based Real Estate and Subdivision Property Management System))
+
+    Admin -->|login data, user records, subdivision data, lot data, sales data, report requests, system parameters| System
+    System -->|JWT tokens, dashboards, user list, blueprint map, reservation data, notifications, sales reports| Admin
+
+    Manager -->|login data, reservation review actions, sales dashboard requests, profile updates| System
+    System -->|JWT tokens, assigned sales, analytics, forecasts, reservation requests, notifications| Manager
+
+    Broker -->|login data, reservation review actions, sales dashboard requests, profile updates| System
+    System -->|JWT tokens, assigned sales, analytics, forecasts, reservation requests, notifications| Broker
+
+    Agent -->|login data, reservation review actions, sales dashboard requests, profile updates| System
+    System -->|JWT tokens, assigned sales, analytics, forecasts, reservation requests, notifications| Agent
+
+    Client -->|registration data, login data, profile data, lot reservation request, AI house requirements| System
+    System -->|JWT tokens, lot map, reservation status, notifications, AI image URL| Client
+
+    System -->|read and write users, subdivisions, lots, reservations, notifications, sales, settings, recommendation history| Database
+    Database -->|stored application records| System
+
+    System -->|house generation prompt| OpenAI
+    OpenAI -->|generated image URL or base64 image data| System
+
+    System -->|JWT session data, property listings, hidden blueprint flag| BrowserStorage
+    BrowserStorage -->|saved session data and local listings| System

@@ -1,0 +1,813 @@
+.interactive-blueprint-page {
+  display: grid;
+  gap: 16px;
+}
+
+.blueprint-page-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid var(--border, #d9e2ec);
+  border-radius: var(--radius-sm, 6px);
+  background: #ffffff;
+}
+
+.blueprint-page-header h1,
+.blueprint-page-header h3,
+.editor-header h3,
+.lot-details-panel h3 {
+  margin: 0;
+  color: var(--text, #102033);
+  letter-spacing: 0;
+}
+
+.blueprint-page-header p {
+  margin: 6px 0 0;
+  color: var(--muted, #64748b);
+}
+
+.lot-panel-eyebrow {
+  margin: 0 0 6px;
+  color: var(--primary, #15803d);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.blueprint-header-actions {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.blueprint-header-actions .blueprint-subdivision-control,
+.lot-filter-bar label,
+.editor-form label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted, #64748b);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.blueprint-subdivision-control {
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+.blueprint-header-actions select {
+  width: 100%;
+  min-width: 0;
+}
+
+.blueprint-header-actions > button,
+.blueprint-header-actions > .blueprint-file-control,
+.blueprint-header-actions > .blueprint-status-pill,
+.blueprint-header-actions select {
+  box-sizing: border-box;
+  min-height: 48px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.blueprint-header-actions > button,
+.blueprint-header-actions > .blueprint-file-control,
+.blueprint-header-actions > .blueprint-status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 1 auto;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+.blueprint-header-actions select,
+.lot-filter-bar input,
+.lot-filter-bar select,
+.editor-form input,
+.editor-form select {
+  min-height: 40px;
+  border: 1px solid var(--border-strong, #cbd5e1);
+  border-radius: var(--radius-sm, 6px);
+  background: #ffffff;
+  color: var(--text, #102033);
+  padding: 8px 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.blueprint-header-actions select {
+  min-height: 48px;
+}
+
+.edit-mode-button,
+.remove-blueprint-button,
+.lot-filter-reset,
+.blueprint-toolbar button,
+.lot-reservation-actions button,
+.editor-actions button,
+.blueprint-file-control,
+.editor-lot-row button {
+  min-height: 40px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm, 6px);
+  background: var(--primary, #15803d);
+  color: #ffffff;
+  padding: 8px 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.lot-filter-reset,
+.blueprint-toolbar button,
+.editor-actions button:nth-child(2),
+.editor-lot-row button {
+  border-color: var(--border-strong, #cbd5e1);
+  background: #ffffff;
+  color: var(--text, #102033);
+}
+
+.remove-blueprint-button {
+  background: #dc2626;
+}
+
+.remove-blueprint-button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.lot-filter-bar {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr)) auto;
+  gap: 10px;
+  align-items: end;
+  padding: 14px;
+  border: 1px solid var(--border, #d9e2ec);
+  border-radius: var(--radius-sm, 6px);
+  background: #f8fafc;
+}
+
+.blueprint-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.blueprint-stat-card {
+  display: grid;
+  gap: 8px;
+  min-height: 112px;
+  border: 1px solid var(--border, #d9e2ec);
+  border-radius: var(--radius-sm, 6px);
+  background: #ffffff;
+  padding: 14px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+}
+
+.blueprint-stat-card span {
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.blueprint-stat-card strong {
+  color: #102033;
+  font-size: 22px;
+  line-height: 1.1;
+}
+
+.blueprint-stat-card small {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.blueprint-message {
+  margin: 0;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-sm, 6px);
+  background: #f0fdf4;
+  color: #166534;
+  padding: 10px 12px;
+  font-weight: 600;
+}
+
+.empty-blueprint-state {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  border: 1px solid var(--border, #d9e2ec);
+  border-radius: var(--radius-sm, 6px);
+  background: #ffffff;
+  padding: 28px;
+}
+
+.empty-blueprint-state h2,
+.empty-blueprint-state p {
+  margin: 0;
+}
+
+.empty-blueprint-state h2 {
+  color: var(--text, #102033);
+  letter-spacing: 0;
+}
+
+.blueprint-workspace,
+.blueprint-gis-workspace,
+.editor-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  gap: 16px;
+  align-items: start;
+}
+
+.blueprint-gis-workspace {
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+}
+
+.blueprint-viewer,
+.lot-details-panel,
+.blueprint-editor,
+.editor-panel,
+.blueprint-left-panel,
+.recent-lots-panel {
+  border: 1px solid var(--border, #d9e2ec);
+  border-radius: var(--radius-sm, 6px);
+  background: #ffffff;
+}
+
+.blueprint-left-panel {
+  display: grid;
+  gap: 16px;
+  padding: 14px;
+  position: sticky;
+  top: 12px;
+}
+
+.gis-panel-section {
+  display: grid;
+  gap: 10px;
+}
+
+.gis-panel-section h3,
+.recent-lots-heading h3 {
+  margin: 0;
+  color: #102033;
+}
+
+.gis-panel-section label,
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #334155;
+  font-weight: 500;
+}
+
+.legend-swatch {
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.2);
+  border-radius: 4px;
+}
+
+.legend-swatch.available {
+  background: rgba(22, 163, 74, 0.7);
+}
+
+.legend-swatch.reserved {
+  background: rgba(37, 99, 235, 0.7);
+}
+
+.legend-swatch.pending {
+  background: rgba(245, 158, 11, 0.78);
+}
+
+.legend-swatch.sold {
+  background: rgba(244, 63, 94, 0.75);
+}
+
+.legend-swatch.open-space {
+  background: rgba(100, 116, 139, 0.75);
+}
+
+.blueprint-viewer {
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.blueprint-toolbar {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 10px;
+  border-bottom: 1px solid var(--border, #d9e2ec);
+  background: #f8fafc;
+}
+
+.blueprint-transform-wrapper {
+  width: 100% !important;
+  height: 520px !important;
+  overflow: hidden;
+  touch-action: none;
+  background: #e2e8f0;
+}
+
+.blueprint-transform-content {
+  width: 100%;
+}
+
+.blueprint-canvas {
+  position: relative;
+  width: min(100%, 1000px);
+  margin: 0 auto;
+  background: #f8fafc;
+  overflow: hidden;
+}
+
+.blueprint-canvas img,
+.blueprint-empty {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  user-select: none;
+}
+
+.blueprint-empty {
+  display: grid;
+  place-items: center;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.blueprint-svg-layer,
+.blueprint-draw-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.blueprint-draw-layer {
+  cursor: crosshair;
+}
+
+.lot-polygon {
+  stroke: rgba(15, 23, 42, 0.46);
+  stroke-width: 3;
+  cursor: pointer;
+  transition: fill 0.16s ease, stroke 0.16s ease, stroke-width 0.16s ease;
+}
+
+.lot-polygon.available {
+  fill: rgba(22, 163, 74, 0.34);
+}
+
+.lot-polygon.reserved {
+  fill: rgba(37, 99, 235, 0.34);
+}
+
+.lot-polygon.pending {
+  fill: rgba(245, 158, 11, 0.38);
+}
+
+.lot-polygon.sold {
+  fill: rgba(244, 63, 94, 0.42);
+}
+
+.lot-polygon.open-space {
+  fill: rgba(100, 116, 139, 0.4);
+}
+
+.lot-polygon:hover,
+.lot-polygon:focus-visible,
+.lot-polygon.selected {
+  fill: rgba(37, 99, 235, 0.34);
+  stroke: #1d4ed8;
+  stroke-width: 5;
+  outline: none;
+}
+
+.lot-map-label {
+  fill: #0f172a;
+  font-size: 18px;
+  font-weight: 500;
+  paint-order: stroke;
+  pointer-events: none;
+  stroke: #ffffff;
+  stroke-width: 5px;
+}
+
+.lot-details-panel {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  position: sticky;
+  top: 12px;
+}
+
+.lot-details-legend {
+  display: grid;
+  gap: 8px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 14px;
+}
+
+.lot-details-legend-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.lot-details-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.lot-status-badge {
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.lot-status-badge.available,
+.editor-lot-row select.available {
+  background: #16a34a;
+}
+
+.lot-status-badge.reserved,
+.editor-lot-row select.reserved {
+  background: #2563eb;
+}
+
+.lot-status-badge.pending,
+.editor-lot-row select.pending {
+  background: #d97706;
+}
+
+.lot-status-badge.sold,
+.editor-lot-row select.sold {
+  background: #e11d48;
+}
+
+.lot-status-badge.open-space,
+.editor-lot-row select.open-space {
+  background: #64748b;
+}
+
+.lot-detail-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+
+.lot-detail-list div {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 8px;
+}
+
+.lot-detail-list dt {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.lot-detail-list dd {
+  margin: 0;
+  color: #102033;
+  font-weight: 500;
+  text-align: right;
+}
+
+.lot-location-card {
+  display: grid;
+  gap: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-sm, 6px);
+  background: #f8fafc;
+  padding: 12px;
+}
+
+.lot-location-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  border-radius: var(--radius-sm, 6px);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.lot-location-link {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #102033;
+  padding: 0 12px;
+}
+
+.lot-panel-muted,
+.lot-reservation-actions p {
+  margin: 0;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.lot-reservation-actions {
+  display: grid;
+  gap: 10px;
+}
+
+.recent-lots-panel {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+}
+
+.recent-lots-heading {
+  display: grid;
+  gap: 2px;
+}
+
+.recent-lots-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
+}
+
+.recent-lot-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-sm, 6px);
+  background: #f8fafc;
+  padding: 12px;
+}
+
+.recent-lot-card strong {
+  color: #102033;
+}
+
+.recent-lot-card span:not(.lot-status-badge) {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.recent-lot-card button {
+  min-height: 34px;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-sm, 6px);
+  background: #ffffff;
+  color: #102033;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.lot-reservation-actions button:disabled,
+.editor-actions button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.blueprint-editor {
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+
+.blueprint-file-control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  background: #15803d;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.blueprint-file-control input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.blueprint-file-control:focus-within,
+.blueprint-header-actions button:focus-visible,
+.blueprint-header-actions select:focus-visible {
+  outline: 3px solid #1d4ed8;
+  outline-offset: 3px;
+}
+
+.blueprint-file-control:has(input:disabled) {
+  cursor: wait;
+}
+
+.editor-panel {
+  display: grid;
+  gap: 16px;
+  padding: 14px;
+}
+
+.editor-form {
+  display: grid;
+  gap: 10px;
+}
+
+.editor-form-heading {
+  display: flex;
+  justify-content: space-between;
+  color: #102033;
+}
+
+.editor-form-heading span {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.editor-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.draft-polyline {
+  fill: none;
+  stroke: #1d4ed8;
+  stroke-width: 4;
+  stroke-dasharray: 8 8;
+}
+
+.draft-polygon {
+  fill: rgba(37, 99, 235, 0.2);
+  stroke: #1d4ed8;
+  stroke-width: 3;
+}
+
+.draft-point {
+  fill: #ffffff;
+  stroke: #1d4ed8;
+  stroke-width: 3;
+  cursor: grab;
+  pointer-events: auto;
+}
+
+.editor-map { min-width: 0; }
+.blueprint-toolbar output { min-width: 4ch; font-variant-numeric: tabular-nums; font-weight: 600; }
+.blueprint-toolbar button[aria-pressed="true"] { background: #1d4ed8; color: white; }
+.blueprint-draw-layer { touch-action: none; }
+.draft-polyline { pointer-events: none; }
+.lot-polygon, .draft-polygon, .draft-polyline { vector-effect: non-scaling-stroke; }
+.blueprint-viewer:fullscreen { width: 100vw; height: 100vh; display: flex; flex-direction: column; }
+.blueprint-viewer:fullscreen .blueprint-transform-wrapper { flex: 1; height: 100% !important; }
+
+.draft-point:active {
+  cursor: grabbing;
+}
+
+.blueprint-status-pill {
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-sm, 6px);
+  background: #f8fafc;
+  color: #334155;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.editor-lot-list {
+  display: grid;
+  gap: 8px;
+}
+
+.editor-lot-row {
+  display: grid;
+  grid-template-columns: 1fr 120px auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.editor-lot-row select {
+  min-height: 38px;
+  border: 0;
+  border-radius: var(--radius-sm, 6px);
+  color: #ffffff;
+  padding: 6px 8px;
+  font-weight: 500;
+}
+
+.delete-lot-button {
+  color: #b91c1c !important;
+}
+
+@media (max-width: 1100px) {
+  .blueprint-workspace,
+  .blueprint-gis-workspace,
+  .editor-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .blueprint-left-panel,
+  .lot-details-panel {
+    position: static;
+  }
+
+  .lot-filter-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .blueprint-page-header,
+  .editor-header {
+    display: grid;
+  }
+
+  .blueprint-header-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .lot-filter-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .editor-lot-row {
+    grid-template-columns: 1fr;
+  }
+
+  .blueprint-transform-wrapper {
+    height: 360px !important;
+  }
+}
+
+
+.correction-workspace { border: 0; padding: 0; margin: 0; min-width: 0; }
+.correction-workspace:disabled { pointer-events: none; opacity: .7; }
+.save-corrections-button.has-changes { background: #b45309; color: white; border: 2px solid #f59e0b; font-weight: 700; }
+.save-corrections-button:disabled { opacity: .55; }
+
+/* CityFavor dashboard presentation refresh */
+/* Presentation around the map only: geometry, status fills and zoom layers stay intact. */
+.role-layout .blueprint-page-header { padding: 24px; border-radius: var(--radius); box-shadow: var(--shadow-soft); gap: 22px; }
+.role-layout .blueprint-page-header h1 { color: var(--primary-strong); font-size: clamp(24px, 2.4vw, 30px); letter-spacing: -.7px; }
+.role-layout .blueprint-page-header p { font-size: 13px; line-height: 1.8; }
+.role-layout .lot-panel-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: .09em; }
+.role-layout .blueprint-header-actions { gap: 12px; }
+.role-layout .blueprint-header-actions :is(button, select, .blueprint-file-control) { border-radius: var(--radius-sm); font-size: 12px; }
+.role-layout .blueprint-toolbar { background: #f5f9f6; padding: 12px; gap: 8px; border-color: var(--border); }
+.role-layout .blueprint-toolbar button { border-radius: 8px; }
+.role-layout .blueprint-left-panel { padding: 18px; gap: 20px; border-radius: 14px; box-shadow: var(--shadow-soft); }
+.role-layout :is(.gis-panel-section h3, .recent-lots-heading h3, .lot-details-panel h3, .editor-header h3) { color: var(--primary-strong); font-size: 16px; }
+.role-layout :is(.lot-details-panel, .editor-panel, .recent-lots-panel) { border-radius: 14px; box-shadow: var(--shadow-soft); }
+.role-layout .lot-details-panel { padding: 23px; }
+.role-layout .lot-details-heading { padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+.role-layout .lot-detail-list div { padding-block: 11px; }
+.role-layout .lot-detail-list dt { font-size: 11px; color: var(--muted); }
+.role-layout .lot-detail-list dd { font-size: 13px; overflow-wrap: anywhere; }
+.role-layout .recent-lot-card { border-radius: 10px; background: #f7faf7; padding: 15px; }
+.role-layout .editor-header { padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+.role-layout .editor-form :is(input, select, textarea) { border-radius: var(--radius-sm); background: #fff; }
+.role-layout .empty-blueprint-state { border-style: dashed; border-radius: var(--radius); background: #fbfdfb; padding: 32px; }
+@media (max-width: 1100px) { .role-layout :is(.blueprint-workspace, .blueprint-gis-workspace, .editor-layout) { grid-template-columns: minmax(0, 1fr); }.role-layout .blueprint-left-panel { position: static; } }
+@media (max-width: 600px) { .role-layout .blueprint-page-header { padding: 18px; }.role-layout .lot-details-panel { padding: 18px; }.role-layout .blueprint-toolbar { padding: 10px; }.role-layout .blueprint-header-actions > * { max-width: 100%; } }
