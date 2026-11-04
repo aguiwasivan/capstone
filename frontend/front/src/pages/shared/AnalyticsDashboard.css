@@ -97,3 +97,5 @@
 .role-layout .analytics-section-heading p { font-size: 13px; line-height: 1.75; }
 .role-layout .analytics-section-heading > span { border: 1px solid #dceee0; background: #edf8ef; }
 @media (max-width: 640px) { .role-layout .analytics-tabs button { width: auto; flex: 1 1 140px; }.role-layout .analytics-section-heading { padding: 17px; } }
+
+.analytics-section-content { min-width: 0; }

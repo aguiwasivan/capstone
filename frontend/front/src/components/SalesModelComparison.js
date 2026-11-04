@@ -1,3 +1,4 @@
+import { memo, useMemo } from "react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { forecastRows, forecastSummary, monthLabel, peso, salesValue } from "./salesForecastUtils";
 import "./SalesModelComparison.css";
@@ -18,9 +19,9 @@ function ForecastDot({ cx, cy, payload }) {
     <title>{`${monthLabel(payload.period)} — Random Forest forecast: ${peso(payload.random_forest)}`}</title>
   </circle>;
 }
-export default function SalesModelComparison({ predictions }) {
+function SalesModelComparison({ predictions }) {
   const comparison = predictions?.model_comparison || {};
-  const rows = forecastRows(comparison.line_chart);
+  const rows = useMemo(() => forecastRows(comparison.line_chart), [comparison.line_chart]);
   const { latest, predicted, difference } = forecastSummary(rows, comparison);
   const metrics = comparison.metrics?.[comparison.selected_model] || {};
   const limitation = comparison.data_limitation_message || predictions?.data_limitation_message;
@@ -66,16 +67,20 @@ export default function SalesModelComparison({ predictions }) {
       <section className="sales-forecast-summary" aria-label="Sales forecast summary">
         <h3>Forecast Summary</h3>
         <p className="sales-forecast-summary-lead">{predicted === null ? "A forecast is not available yet. Actual sales remain visible above." : `Random Forest projects ${peso(predicted)} in total contract value for ${monthLabel(comparison.next_period)}.`}</p>
+        <dl className="sales-forecast-validation"><div><dt>RMSE</dt><dd>{peso(metrics.rmse)}</dd></div><div><dt>MAE</dt><dd>{peso(metrics.mae)}</dd></div><div><dt>MAPE</dt><dd>{salesValue(metrics.mape) === null ? "Unavailable" : `${Number(metrics.mape).toFixed(2)}%`}</dd></div></dl>
+        <p className="sales-forecast-data-note">{metrics.validation_points || 0} holdout months evaluated with walk-forward validation. Forecasts are estimates, not guaranteed sales.</p>
+        <p>{predictions?.forecast_basis || "Forecasts require completed calendar months of sales data."}</p>
+        <details className="sales-forecast-data"><summary>Forecast explanation and suggested action</summary>
         {latest && predicted !== null && <p>The latest actual month, {monthLabel(latest.period)}, recorded {peso(latest.actual)}.{difference === null ? " Percentage difference is unavailable because the latest actual value is zero." : ` The forecast is ${Math.abs(difference).toFixed(2)}% ${difference < 0 ? "below" : difference > 0 ? "above" : "different from"} that month.`}</p>}
         {previous && latest && previous.period !== latest.period && <p>Recent movement: recorded sales moved from {peso(previous.actual)} in {monthLabel(previous.period)} to {peso(latest.actual)} in {monthLabel(latest.period)}.</p>}
         {latest && predicted !== null && <p>Suggested action: {predicted >= latest.actual
           ? "prepare inventory and follow up on reservations for a possible sales increase."
           : "review lead quality, reservation follow-ups, and slow-moving projects."}</p>}
-        <dl className="sales-forecast-validation"><div><dt>RMSE</dt><dd>{peso(metrics.rmse)}</dd></div><div><dt>MAE</dt><dd>{peso(metrics.mae)}</dd></div><div><dt>MAPE</dt><dd>{salesValue(metrics.mape) === null ? "Unavailable" : `${Number(metrics.mape).toFixed(2)}%`}</dd></div></dl>
-        <p className="sales-forecast-data-note">Errors come from walk-forward validation. Forecasts are estimates, not guaranteed sales.</p>
-        <p>{predictions?.forecast_basis || "Forecasts require completed calendar months of sales data."}</p>
+        </details>
         {limitation && <p className="sales-forecast-limitation">{limitation}</p>}
       </section>
     </section>
   );
 }
+
+export default memo(SalesModelComparison);

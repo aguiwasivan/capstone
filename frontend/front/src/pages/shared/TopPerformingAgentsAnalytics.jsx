@@ -14,7 +14,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import api from "../../api";
+import useAnalyticsGet from "../../hooks/useAnalyticsGet";
 import AnalyticsSkeleton from "./AnalyticsSkeleton";
 
 const emptyFilters = {
@@ -82,12 +82,15 @@ export default function TopPerformingAgentsAnalytics({ embedded = false }) {
   const [retryVersion, setRetryVersion] = useState(0);
   const [pipelineRetryVersion, setPipelineRetryVersion] = useState(0);
 
+  const get = useAnalyticsGet(`${refreshVersion}:${retryVersion}`);
+  const getPipeline = useAnalyticsGet(`${refreshVersion}:${pipelineRetryVersion}`);
+
   const query = useMemo(() => buildQuery(filters), [filters]);
   const summary = analytics?.summary || {};
   const performanceData = useMemo(() => analytics?.performance_data || [], [analytics]);
   const topSalesPerformers = useMemo(() => analytics?.top_sales_performers || [], [analytics]);
+  const conversionCountRows = useMemo(() => performanceData.slice(0, 10), [performanceData]);
   const topConversionPerformers = useMemo(() => analytics?.top_conversion_performers || [], [analytics]);
-  const commissionPerformance = useMemo(() => analytics?.commission_performance || [], [analytics]);
   const monthlySalesPerformance = useMemo(() => analytics?.monthly_sales_performance || [], [analytics]);
   const pipelineRows = useMemo(() => pipelineForecast?.agent_pipeline_forecasts || [], [pipelineForecast]);
   const validPipelineChartRows = useMemo(
@@ -127,19 +130,18 @@ export default function TopPerformingAgentsAnalytics({ embedded = false }) {
 
   useEffect(() => {
     let active = true;
-    api.get("subdivisions/").then((res) => {
+    get("subdivisions/", { params: { compact: "true" } }).then((res) => {
       if (active) { setSubdivisions(res.data); setSubdivisionError(""); }
     }).catch(() => { if (active) setSubdivisionError("Subdivision filters could not be loaded."); });
     return () => { active = false; };
-  }, [refreshVersion]);
+  }, [get]);
 
   useEffect(() => {
     let isMounted = true;
     setIsLoading(true);
     setError("");
 
-    api
-      .get(`analytics/top-performing-agents/${query ? `?${query}` : ""}`)
+    get(`analytics/top-performing-agents/${query ? `?${query}` : ""}`)
       .then((res) => {
         if (!isMounted) return;
         setAnalytics(res.data);
@@ -156,15 +158,14 @@ export default function TopPerformingAgentsAnalytics({ embedded = false }) {
     return () => {
       isMounted = false;
     };
-  }, [query, refreshVersion, retryVersion]);
+  }, [query, get]);
 
   useEffect(() => {
     let isMounted = true;
     setIsLoadingPipeline(true);
     setPipelineError("");
 
-    api
-      .get(`analytics/agent-sales-pipeline-forecast/${query ? `?${query}` : ""}`)
+    getPipeline(`analytics/agent-sales-pipeline-forecast/${query ? `?${query}` : ""}`)
       .then((res) => {
         if (!isMounted) return;
         setPipelineForecast(res.data);
@@ -185,7 +186,7 @@ export default function TopPerformingAgentsAnalytics({ embedded = false }) {
     return () => {
       isMounted = false;
     };
-  }, [query, refreshVersion, pipelineRetryVersion]);
+  }, [query, getPipeline]);
 
   const updateFilter = (event) => {
     const { name, value } = event.target;
@@ -272,7 +273,7 @@ export default function TopPerformingAgentsAnalytics({ embedded = false }) {
 
       {subdivisionError && <p role="alert">{subdivisionError}</p>}
       {error && <div className="analytics-section-error" role="alert"><p>{error}</p><button className="analytics-retry-button" type="button" onClick={() => setRetryVersion((value) => value + 1)}>Retry agent performance</button></div>}
-      {isLoading && <AnalyticsSkeleton label="Loading agent performance..." cards={5} charts={5} />}
+      {isLoading && <AnalyticsSkeleton label="Loading agent performance..." cards={5} charts={3} />}
       {!isLoading && !error && !hasData && (
         <p className="performance-state">No performance activity found for the selected filters.</p>
       )}
@@ -318,12 +319,15 @@ export default function TopPerformingAgentsAnalytics({ embedded = false }) {
                 <XAxis dataKey="name" tick={{ fontSize: 11 }} />
                 <YAxis />
                 <Tooltip formatter={(value) => formatCurrency(value)} />
-                <Bar dataKey="total_sales_amount" name="Sales Amount" fill="#15803D" radius={[6, 6, 0, 0]} />
+                <Bar isAnimationActive={false} dataKey="total_sales_amount" name="Sales Amount" fill="#15803D" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </article>
 
+        <section className="agent-conversion-section" aria-label="Agent Sales Conversion Performance">
+          <header><h2>Agent Sales Conversion Performance</h2><p>Assigned reservation counts, recorded sales, and reservation conversion rates.</p></header>
+          <div className="agent-conversion-grid">
         <article className="role-panel performance-chart-card">
           <div className="performance-chart-heading">
             <h2>Reservations Handled vs Completed Sales per Agent</h2>
@@ -331,14 +335,14 @@ export default function TopPerformingAgentsAnalytics({ embedded = false }) {
           </div>
           <div className="performance-chart">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={performanceData.slice(0, 10)}>
+              <BarChart data={conversionCountRows}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" tick={{ fontSize: 11 }} />
                 <YAxis allowDecimals={false} />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="reservations_handled" name="Reservations" fill="#2563eb" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="completed_sales" name="Completed Sales" fill="#15803D" radius={[6, 6, 0, 0]} />
+                <Bar isAnimationActive={false} dataKey="reservations_handled" name="Reservations" fill="#2563eb" radius={[6, 6, 0, 0]} />
+                <Bar isAnimationActive={false} dataKey="completed_sales" name="Completed Sales" fill="#15803D" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -356,11 +360,14 @@ export default function TopPerformingAgentsAnalytics({ embedded = false }) {
                 <XAxis dataKey="name" tick={{ fontSize: 11 }} />
                 <YAxis tickFormatter={(value) => `${value}%`} />
                 <Tooltip formatter={(value) => formatPercent(value)} />
-                <Bar dataKey="conversion_rate" name="Conversion Rate" fill="#7c3aed" radius={[6, 6, 0, 0]} />
+                <Bar isAnimationActive={false} dataKey="conversion_rate" name="Conversion Rate" fill="#7c3aed" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </article>
+
+          </div>
+        </section>
 
         <article className="role-panel performance-chart-card">
           <div className="performance-chart-heading">
@@ -377,6 +384,7 @@ export default function TopPerformingAgentsAnalytics({ embedded = false }) {
                 <Legend />
                 {monthlyLineNames.map((person, index) => (
                   <Line
+                    isAnimationActive={false}
                     key={person.id}
                     type="monotone"
                     dataKey={`agent_${person.id}`}
@@ -391,25 +399,7 @@ export default function TopPerformingAgentsAnalytics({ embedded = false }) {
           </div>
         </article>
 
-        <article className="role-panel performance-chart-card">
-          <div className="performance-chart-heading">
-            <h2>Agent Commission Performance</h2>
-            <p>Recorded commission amounts by agent. Pending payment amounts are not recorded.</p>
-          </div>
-          <div className="performance-chart">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={commissionPerformance}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" tick={{ fontSize: 11 }} />
-                <YAxis />
-                <Tooltip formatter={(value) => formatCurrency(value)} />
-                <Legend />
-                <Bar dataKey="commission_earned" name="Earned Commission" fill="#15803D" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="pending_commission" name="Pending Commission" fill="#f59e0b" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </article>
+
       </section>
 
       <section className="role-panel properties-panel performance-table-panel">
@@ -464,6 +454,10 @@ export default function TopPerformingAgentsAnalytics({ embedded = false }) {
           </table>
         </div>
 
+
+      </section>
+      </div>}
+      <section className="role-panel">
         <section className="agent-pipeline-forecast" aria-label="Agent sales pipeline forecast">
           <div className="performance-chart-heading">
             <h2>Agent Sales Pipeline Forecast</h2>
@@ -521,7 +515,7 @@ export default function TopPerformingAgentsAnalytics({ embedded = false }) {
                       <XAxis dataKey="agent_name" tick={{ fontSize: 11 }} />
                       <YAxis tickFormatter={(value) => `PHP ${Number(value || 0).toLocaleString("en-PH")}`} />
                       <Tooltip formatter={(value) => formatCurrency(value)} />
-                      <Bar dataKey="projected_sales_value" name="Projected Sales Value" fill="#2563eb" radius={[6, 6, 0, 0]} />
+                      <Bar isAnimationActive={false} dataKey="projected_sales_value" name="Projected Sales Value" fill="#2563eb" radius={[6, 6, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -573,7 +567,6 @@ export default function TopPerformingAgentsAnalytics({ embedded = false }) {
           )}
         </section>
       </section>
-      </div>}
     </div>
   );
 }

@@ -74,10 +74,10 @@ export default function AnalyticsDashboard() {
             <span>01</span>
             <div>
               <h2 id="sales-analytics-heading">Sales Analytics</h2>
-              <p>Sales totals, forecasts, commissions, and recent transaction records.</p>
+              <p>Sales totals, forecasts, commissions, and monthly and yearly trends.</p>
             </div>
           </div>
-          <SalesDashboard roleName="Sales" embedded showRecentSalesTable />
+          <SalesDashboard roleName="Sales" embedded />
         </section>
       )}
 
@@ -113,7 +113,7 @@ export default function AnalyticsDashboard() {
             <span>04</span>
             <div>
               <h2 id="top-agents-heading">Top Performing Agents</h2>
-              <p>Agent rankings by sales amount, reservations handled, conversion, and commission.</p>
+              <p>Agent rankings, sales conversion, monthly performance, and pipeline forecasts.</p>
             </div>
           </div>
           <TopPerformingAgentsAnalytics embedded />

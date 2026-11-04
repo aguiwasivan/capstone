@@ -1,3 +1,4 @@
+/* eslint testing-library/no-unnecessary-act: "off" -- Raw React createRoot requires explicit act; these tests do not use Testing Library. */
 import { act } from "react";
 import { createRoot } from "react-dom/client";
 import api from "../api";
@@ -38,6 +39,27 @@ test("totals render before the forecast and remain visible during refresh", asyn
     expect(host.textContent).toContain("Total Sales27");
     expect(host.textContent).toContain("Forecast ready");
     expect(host.textContent).toContain("Updating sales forecast...");
+  } finally {
+    await act(async () => root.unmount());
+    mockRefreshVersion = 0;
+    delete global.IS_REACT_ACT_ENVIRONMENT;
+  }
+});
+
+test("Strict Mode shares in-flight requests and refresh starts fresh requests", async () => {
+  global.IS_REACT_ACT_ENVIRONMENT = true;
+  const React = require("react");
+  const host = document.createElement("div");
+  const root = createRoot(host);
+  api.get.mockClear();
+  api.get.mockImplementation(() => new Promise(() => {}));
+  const render = () => root.render(<React.StrictMode><AuthContext.Provider value={{ user: { id: 1, role: "admin" } }}><SalesDashboard /></AuthContext.Provider></React.StrictMode>);
+  try {
+    await act(async () => render());
+    expect(api.get).toHaveBeenCalledTimes(3);
+    mockRefreshVersion = 1;
+    await act(async () => render());
+    expect(api.get).toHaveBeenCalledTimes(6);
   } finally {
     await act(async () => root.unmount());
     mockRefreshVersion = 0;

@@ -17,7 +17,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import api from "../../api";
+import useAnalyticsGet from "../../hooks/useAnalyticsGet";
 import AnalyticsSkeleton from "./AnalyticsSkeleton";
 
 const emptyFilters = {
@@ -73,6 +73,9 @@ export default function ReservationAnalytics({ embedded = false }) {
   const [error, setError] = useState("");
   const [retryVersion, setRetryVersion] = useState(0);
 
+  const get = useAnalyticsGet(`${refreshVersion}:${retryVersion}`);
+  const [subdivisionsLoaded, setSubdivisionsLoaded] = useState(false);
+
   const query = useMemo(() => buildQuery(filters), [filters]);
   const summary = analytics?.summary || {};
   const monthlyReservations = analytics?.monthly_reservations || [];
@@ -80,23 +83,18 @@ export default function ReservationAnalytics({ embedded = false }) {
   const mostReservedLots = useMemo(() => analytics?.most_reserved_lots || [], [analytics?.most_reserved_lots]);
   const mostReservedBlocksPhases = analytics?.most_reserved_blocks_phases || [];
   const filteredMostReservedLots = mostReservedLots;
-  const conversionRows = useMemo(() => {
-    const total = Number(summary.total_reservations || 0);
-    const converted = Number(summary.completed_sales_from_reservations || 0);
-    return [
-      { name: "Converted", value: converted },
-      { name: "Not Converted", value: Math.max(total - converted, 0) },
-    ];
-  }, [summary.completed_sales_from_reservations, summary.total_reservations]);
   const subdivisionDemandRows = useMemo(() => {
-    if (analytics?.reservation_by_subdivision) {
-      return analytics.reservation_by_subdivision.map((row) => ({
-        label: row.subdivision || "No subdivision",
+    const eligible = new Map(subdivisions.map((item) => [String(item.id), item.name]));
+    return (analytics?.reservation_by_subdivision || [])
+      .filter((row) => eligible.has(String(row.subdivision_id)) &&
+        (!filters.subdivision_id || String(row.subdivision_id) === filters.subdivision_id))
+      .map((row) => ({
+        subdivision_id: row.subdivision_id,
+        label: eligible.get(String(row.subdivision_id)),
         reservation_count: row.reservation_count,
       }));
-    }
-    return [];
-  }, [analytics]);
+  }, [analytics?.reservation_by_subdivision, subdivisions, filters.subdivision_id]);
+  const hasSubdivisionDemand = subdivisionDemandRows.some((row) => Number(row.reservation_count) > 0);
   const hasAnalyticsRows =
     monthlyReservations.length ||
     statusDistribution.some((item) => item.count) ||
@@ -105,36 +103,29 @@ export default function ReservationAnalytics({ embedded = false }) {
 
   useEffect(() => {
     let active = true;
-    Promise.all([api.get("subdivisions/", { params: { compact: "true" } }), api.get("blueprints/")]).then(([res, blueprintRes]) => {
+    get("subdivisions/", { params: { compact: "true", map_selectable: "true" } }).then((res) => {
       if (!active) return;
-      const savedId = sessionStorage.getItem("selectedBlueprintId");
-      const blueprint = blueprintRes.data.find((item) => String(item.id) === savedId) || blueprintRes.data[0];
-      const current = blueprint
-        ? res.data.filter((item) => item.name === (blueprint.title || "Subdivision Blueprint"))
-        : [];
-      setSubdivisions(current);
-      setFilters((previous) => ({ ...previous, subdivision_id: current[0] ? String(current[0].id) : "" }));
-      setSubdivisionError(current.length ? "" : "No analytics subdivision is available for the current blueprint.");
-      if (!current.length) { setAnalytics(null); setIsLoading(false); }
+      setSubdivisions([...new Map(res.data.map((item) => [String(item.id), item])).values()]);
+      setFilters((current) => current.subdivision_id && !res.data.some((item) => String(item.id) === current.subdivision_id)
+        ? { ...current, subdivision_id: "" } : current);
+      setSubdivisionError("");
+      setSubdivisionsLoaded(true);
     }).catch(() => {
       if (active) {
-        setSubdivisions([]);
-        setAnalytics(null);
-        setIsLoading(false);
-        setSubdivisionError("The current blueprint subdivision could not be loaded.");
+        setSubdivisionError("Subdivision filters could not be loaded. You can still view all reservations.");
+        setSubdivisionsLoaded(true);
       }
     });
     return () => { active = false; };
-  }, [refreshVersion]);
+  }, [get]);
 
   useEffect(() => {
-    if (!filters.subdivision_id || !subdivisions.length) return;
+    if (!subdivisionsLoaded) return;
     let isMounted = true;
     setIsLoading(true);
     setError("");
 
-    api
-      .get(`analytics/reservations/${query ? `?${query}` : ""}`)
+    get(`analytics/reservations/${query ? `?${query}` : ""}`)
       .then((res) => {
         if (!isMounted) return;
         setAnalytics(res.data);
@@ -151,7 +142,7 @@ export default function ReservationAnalytics({ embedded = false }) {
     return () => {
       isMounted = false;
     };
-  }, [query, refreshVersion, filters.subdivision_id, subdivisions.length, retryVersion]);
+  }, [query, get, subdivisionsLoaded]);
 
   const updateFilter = (event) => {
     const { name, value } = event.target;
@@ -159,7 +150,7 @@ export default function ReservationAnalytics({ embedded = false }) {
   };
 
   const resetFilters = () => {
-    setFilters({ ...emptyFilters, subdivision_id: subdivisions[0] ? String(subdivisions[0].id) : "" });
+    setFilters({ ...emptyFilters });
   };
 
   return (
@@ -190,7 +181,7 @@ export default function ReservationAnalytics({ embedded = false }) {
           <label>
             Subdivision
             <select name="subdivision_id" value={filters.subdivision_id} onChange={updateFilter}>
-              {!subdivisions.length && <option value="">No blueprint subdivision available</option>}
+              <option value="">All Subdivisions</option>
               {subdivisions.map((subdivision) => (
                 <option key={subdivision.id} value={subdivision.id}>
                   {subdivision.name}
@@ -218,6 +209,7 @@ export default function ReservationAnalytics({ embedded = false }) {
         </div>
       </section>
 
+      <p className="reservation-state">The subdivision selector and Most Reserved Subdivision chart use Interactive Lot Map subdivisions. All Subdivisions retains historical records in the other analytics sections.</p>
       {subdivisionError && <p role="alert">{subdivisionError}</p>}
       {error && <div className="analytics-section-error" role="alert"><p>{error}</p><button className="analytics-retry-button" type="button" onClick={() => setRetryVersion((value) => value + 1)}>Retry reservation analytics</button></div>}
       {isLoading && <AnalyticsSkeleton label="Loading reservation analytics..." cards={7} charts={4} />}
@@ -234,7 +226,7 @@ export default function ReservationAnalytics({ embedded = false }) {
         <section className="role-stat-card"><p>Declined</p><strong>{summary.declined_reservations || 0}</strong><span>Not accepted</span></section>
         <section className="role-stat-card"><p>Cancelled</p><strong>{summary.cancelled_reservations || 0}</strong><span>Cancelled requests</span></section>
         <section className="role-stat-card"><p>Completed Sales</p><strong>{summary.completed_sales_from_reservations || 0}</strong><span>Linked conversions</span></section>
-        <section className="role-stat-card"><p>Conversion Rate</p><strong>{formatPercent(summary.conversion_rate)}</strong><span>Reservations to sales</span></section>
+        <section className="role-stat-card"><p>Conversion Rate</p><strong>{formatPercent(summary.conversion_rate)}</strong><span>{summary.completed_sales_from_reservations || 0} of {summary.total_reservations || 0} reservations</span></section>
       </div>
 
       <section className="reservation-chart-grid">
@@ -250,7 +242,7 @@ export default function ReservationAnalytics({ embedded = false }) {
                 <XAxis dataKey="month" tick={{ fontSize: 11 }} />
                 <YAxis allowDecimals={false} />
                 <Tooltip />
-                <Line type="monotone" dataKey="reservation_count" name="Reservations" stroke="#15803D" strokeWidth={3} dot={{ r: 4 }} />
+                <Line isAnimationActive={false} type="monotone" dataKey="reservation_count" name="Reservations" stroke="#15803D" strokeWidth={3} dot={{ r: 4 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -264,7 +256,7 @@ export default function ReservationAnalytics({ embedded = false }) {
           <div className="reservation-chart">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
-                <Pie data={statusDistribution} dataKey="count" nameKey="status" innerRadius={55} outerRadius={90} paddingAngle={4}>
+                <Pie isAnimationActive={false} data={statusDistribution} dataKey="count" nameKey="status" innerRadius={55} outerRadius={90} paddingAngle={4}>
                   {statusDistribution.map((entry) => (
                     <Cell key={entry.status} fill={statusColors[entry.status] || "#64748b"} />
                   ))}
@@ -276,53 +268,30 @@ export default function ReservationAnalytics({ embedded = false }) {
           </div>
         </article>
 
-        <article className="role-panel reservation-chart-card conversion-card">
-          <div className="reservation-chart-heading">
-            <h2>Reservation-to-Sale Conversion</h2>
-            <p>{formatPercent(summary.conversion_rate)} of filtered reservations converted to completed sales.</p>
-          </div>
-          <div className="reservation-conversion-layout">
-            <div className="reservation-conversion-rate">
-              <strong>{formatPercent(summary.conversion_rate)}</strong>
-              <span>{summary.completed_sales_from_reservations || 0} of {summary.total_reservations || 0} reservations</span>
-            </div>
-            <div className="reservation-chart compact">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie data={conversionRows} dataKey="value" nameKey="name" innerRadius={48} outerRadius={78}>
-                    <Cell fill="#15803D" />
-                    <Cell fill="#e2e8f0" />
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        </article>
-
         <article className="role-panel reservation-chart-card">
           <div className="reservation-chart-heading">
             <h2>Most Reserved Subdivision</h2>
-            <p>Reservation demand grouped by subdivision.</p>
+            <p>Recorded reservations for map-eligible subdivisions within the selected filters.</p>
           </div>
-          <div className="reservation-chart">
+          {!hasSubdivisionDemand && <p className="reservation-state">No reservations recorded for map-eligible subdivisions within these filters.</p>}
+          {hasSubdivisionDemand && <div className="reservation-chart">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={subdivisionDemandRows}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="label" tick={{ fontSize: 11 }} />
                 <YAxis allowDecimals={false} />
                 <Tooltip />
-                <Bar dataKey="reservation_count" name="Reservations" radius={[6, 6, 0, 0]}>
+                <Bar isAnimationActive={false} dataKey="reservation_count" name="Reservations" radius={[6, 6, 0, 0]}>
                   {subdivisionDemandRows.map((entry, index) => (
                     <Cell
-                      key={entry.label}
+                      key={entry.subdivision_id}
                       fill={subdivisionChartColors[index % subdivisionChartColors.length]}
                     />
                   ))}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
-          </div>
+          </div>}
         </article>
       </section>
 
@@ -335,7 +304,7 @@ export default function ReservationAnalytics({ embedded = false }) {
           <label className="reservation-lots-filter">
             Subdivision
             <select value={filters.subdivision_id} onChange={(event) => setFilters((current) => ({ ...current, subdivision_id: event.target.value }))}>
-              {!subdivisions.length && <option value="">No blueprint subdivision available</option>}
+              <option value="">All Subdivisions</option>
               {subdivisions.map((subdivision) => (
                 <option key={subdivision.id} value={subdivision.id}>
                   {subdivision.name}

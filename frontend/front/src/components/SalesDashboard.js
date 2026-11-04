@@ -14,6 +14,7 @@ import api from "../api";
 import { AuthContext } from "../context/AuthContext";
 import SalesModelComparison from "./SalesModelComparison";
 import "./RoleDashboard.css";
+import "./SalesAnalytics.css";
 import "../pages/shared/SalesTransactions.css";
 import AnalyticsSkeleton from "../pages/shared/AnalyticsSkeleton";
 
@@ -66,6 +67,7 @@ export default function SalesDashboard({
   const [predictionLoading, setPredictionLoading] = useState(true);
   const [retryVersion, setRetryVersion] = useState(0);
   const loadedScope = useRef(null);
+  const pendingRequests = useRef(new Map());
   const userRole = String(user?.role || "").toLowerCase();
   const dashboardRole = userRole || String(roleName || "").toLowerCase();
   const userId = user?.id;
@@ -85,9 +87,21 @@ export default function SalesDashboard({
     setPredictionError("");
     setPredictionLoading(true);
 
+    // Reuse only in-flight requests for this exact scope and refresh generation.
+    // Strict Mode replays effects; each subscriber retains its own cleanup guard.
+    const get = (url) => {
+      const key = JSON.stringify([scope, refreshVersion, retryVersion, url]);
+      const pending = pendingRequests.current;
+      if (!pending.has(key)) {
+        const request = api.get(url).finally(() => pending.delete(key));
+        pending.set(key, request);
+      }
+      return pending.get(key);
+    };
+
     Promise.allSettled([
-      api.get("sales-transactions/"),
-      api.get("sales-analytics/"),
+      get("sales-transactions/"),
+      get("sales-analytics/"),
     ]).then(([salesResult, analyticsResult]) => {
       if (!isActive) return;
 
@@ -100,7 +114,7 @@ export default function SalesDashboard({
       setLoading(false);
     });
 
-    api.get("sales-predictions/?period=monthly").then(({ data }) => {
+    get("sales-predictions/?period=monthly").then(({ data }) => {
       if (isActive) setMonthlyPrediction(data);
     }).catch(() => {
       if (isActive) setPredictionError("Sales forecast could not be loaded.");
@@ -223,11 +237,13 @@ export default function SalesDashboard({
 
       <div className="role-dashboard-panels">
         {predictionLoading && <p role="status">{monthlyPrediction ? "Updating sales forecast..." : "Calculating sales forecast..."}</p>}
-        {predictionError && <p role="alert">{predictionError}</p>}
+        {predictionError && <div role="alert"><p>{predictionError}</p><button className="analytics-retry-button" type="button" onClick={() => setRetryVersion((value) => value + 1)}>Retry sales forecast</button></div>}
         {monthlyPrediction && <SalesModelComparison predictions={scopedMonthlyPrediction} />}
 
-        <section className="role-panel">
-          <h2>Monthly Sales</h2>
+        <section className="role-panel sales-trends" aria-label="Sales Trends">
+          <header><h2>Sales Trends</h2><p>Recorded contract value by month and year.</p></header>
+          <div className="sales-trends-grid">
+          <section><h3>Monthly Sales</h3>
           {!!monthlyChartRows.length && (
             <div className="monthly-sales-chart">
               <ResponsiveContainer width="100%" height="100%">
@@ -244,6 +260,7 @@ export default function SalesDashboard({
                     strokeWidth={3}
                     dot={{ r: 4 }}
                     activeDot={{ r: 5 }}
+                    isAnimationActive={false}
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -258,10 +275,9 @@ export default function SalesDashboard({
             ))}
             {!monthlyRows.length && <p className="sales-dashboard-empty">No monthly sales yet.</p>}
           </div>
-        </section>
+          </section>
 
-        <section className="role-panel">
-          <h2>Yearly Sales</h2>
+          <section><h3>Yearly Sales</h3>
           <div className="pipeline-list">
             {annualRows.slice(-5).map((item) => (
               <div className="pipeline-item" key={item.period}>
@@ -270,6 +286,8 @@ export default function SalesDashboard({
               </div>
             ))}
             {!annualRows.length && <p className="sales-dashboard-empty">No yearly sales yet.</p>}
+          </div>
+          </section>
           </div>
         </section>
       </div>
