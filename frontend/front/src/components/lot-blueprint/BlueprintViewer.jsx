@@ -85,7 +85,9 @@ export default function BlueprintViewer({
                 Fullscreen
               </button>
             </div>
-            <TransformComponent wrapperClass="blueprint-transform-wrapper" contentClass="blueprint-transform-content">
+            {/* Override the library's injected fit-content width regardless of CSS load order.
+                The percentage-sized canvas has no in-flow image to give it intrinsic width. */}
+            <TransformComponent wrapperClass="blueprint-transform-wrapper" contentClass="blueprint-transform-content" contentStyle={{ width: "100%" }}>
               <div className="blueprint-canvas" style={{ aspectRatio: `${width} / ${height}` }}>
                 {imageUrl ? (
                   <img src={imageUrl} alt={blueprint?.name || "Subdivision blueprint"} draggable="false" />

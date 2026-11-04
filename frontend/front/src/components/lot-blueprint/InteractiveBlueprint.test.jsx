@@ -30,6 +30,13 @@ beforeEach(async () => {
 });
 afterEach(async () => { await act(async () => root.unmount()); host.remove(); delete global.IS_REACT_ACT_ENVIRONMENT; });
 
+test("successful blueprint and polygon requests finish loading", () => {
+  expect(api.listBlueprints).toHaveBeenCalled();
+  expect(api.listBlueprintPolygons).toHaveBeenCalledWith("map");
+  expect(host.textContent).not.toContain("Loading blueprints...");
+  expect([...host.querySelectorAll("button")].find((button) => button.textContent === "Correction Mode").disabled).toBe(false);
+});
+
 test("stages multiple lots and saves current form in one request, then refreshes details", async () => {
   await click("Correction Mode");
   await click("BA L1");
