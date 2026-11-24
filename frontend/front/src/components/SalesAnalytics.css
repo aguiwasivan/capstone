@@ -3,3 +3,58 @@
 .sales-trends-grid > section { min-width: 0; }
 .sales-trends header p { color: var(--muted); line-height: 1.6; }
 @media (max-width: 800px) { .sales-trends-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Equal-width sales cards share a fitted value size across each dashboard. */
+.role-dashboard .sales-summary-grid,
+.role-layout .role-dashboard .sales-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+.role-dashboard .sales-summary-grid .role-stat-card,
+.role-layout .role-dashboard .sales-summary-grid .role-stat-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 30px 24px 1fr;
+  align-content: start;
+  min-width: 0;
+  padding: 14px 15px;
+}
+.role-dashboard .sales-summary-grid .role-stat-card p,
+.role-layout .role-dashboard .sales-summary-grid .role-stat-card p {
+  align-self: start;
+  margin: 0;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.role-dashboard .sales-summary-grid .role-stat-card strong,
+.role-layout .role-dashboard .sales-summary-grid .role-stat-card strong {
+  min-width: 0;
+  align-self: center;
+  margin: 0;
+  font-size: var(--sales-value-size, 16px);
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+.role-dashboard .sales-summary-grid .role-stat-card > span,
+.role-layout .role-dashboard .sales-summary-grid .role-stat-card > span {
+  margin-top: 6px;
+  font-size: 11px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 1100px) {
+  .role-dashboard .sales-summary-grid,
+  .role-layout .role-dashboard .sales-summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .role-dashboard .sales-summary-grid,
+  .role-layout .role-dashboard .sales-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 440px) {
+  .role-dashboard .sales-summary-grid,
+  .role-layout .role-dashboard .sales-summary-grid { grid-template-columns: 1fr; }
+}

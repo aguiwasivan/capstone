@@ -402,8 +402,8 @@
 .role-sidebar-link:hover { background: rgba(220,252,231,.09); }
 .role-sidebar-link.active .role-sidebar-icon { opacity: 1; color: #bbf7d0; }
 .role-sidebar-footer { border-top: 1px solid rgba(220,252,231,.12); margin-top: 22px; padding-top: 16px; }
-.role-logout-button { min-height: 44px; font-size: 12px; background: rgba(255,255,255,.055); color: #d9ecdf; border: 1px solid rgba(220,252,231,.13); border-radius: 8px; padding: 11px 14px; }
-.role-logout-button:hover { background: rgba(255,255,255,.12); }
+.role-logout-button { min-height: 44px; font-size: 12px; background: #b91c1c; color: #ffffff; border: 1px solid #b91c1c; border-radius: 8px; padding: 11px 14px; }
+.role-logout-button:hover { background: #991b1b; border-color: #991b1b; }
 .role-main-content { padding: 34px clamp(24px, 3vw, 48px) 48px; background: var(--bg); }
 @media (min-width: 1700px) { .role-main-content { padding: 42px 60px 60px; } }
 @media (max-width: 900px) {

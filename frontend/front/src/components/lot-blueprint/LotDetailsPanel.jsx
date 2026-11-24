@@ -48,51 +48,36 @@ export default function LotDetailsPanel({
     <aside className="lot-details-panel">
       {legend}
       <div className="lot-details-heading">
-        <div>
-          <p className="lot-panel-eyebrow">Lot Details</p>
-          <h3>
-            Block {lot.block_number || "Not yet provided"}, Lot {lot.lot_number || "Not yet provided"}
-          </h3>
+        <div className="lot-details-identity">
+          <p className="lot-details-subdivision">{lot.subdivision || "Not set"}</p>
+          <div className="lot-details-title-row">
+            <h3>Block {lot.block_number || "Not set"}, Lot {lot.lot_number || "Not set"}</h3>
+            <span className={`lot-status-badge ${statusClass}`}>{lot.status || "available"}</span>
+          </div>
         </div>
-        <span className={`lot-status-badge ${statusClass}`}>{lot.status || "available"}</span>
       </div>
 
-      <dl className="lot-detail-list">
-        <div>
-          <dt>Subdivision</dt>
-          <dd>{lot.subdivision || "Not yet provided"}</dd>
+      <dl className="lot-detail-list lot-detail-compact">
+        <div className="lot-detail-metric">
+          <dt>Area (sqm)</dt>
+          <dd>{lot.area_sqm != null && Number.isFinite(Number(lot.area_sqm)) ? `${Number(lot.area_sqm).toLocaleString()} sqm` : "Not set"}</dd>
         </div>
-        <div>
-          <dt>Phase</dt>
-          <dd>{lot.phase || "Not yet provided"}</dd>
-        </div>
-        <div>
-          <dt>Block Number</dt>
-          <dd>{lot.block_number || "Not yet provided"}</dd>
-        </div>
-        <div>
-          <dt>Lot Number</dt>
-          <dd>{lot.lot_number || "Not yet provided"}</dd>
-        </div>
-        <div>
-          <dt>Area/sqm</dt>
-          <dd>{lot.area_sqm != null ? `${Number(lot.area_sqm).toLocaleString()} sqm` : "Not yet provided"}</dd>
-        </div>
-        <div>
+        <div className="lot-detail-metric">
           <dt>Price</dt>
-          <dd>{lot.price == null ? "Not yet provided" : lot.price === 0 ? "₱0" : formatCurrency(lot.price)}</dd>
+          <dd>{lot.price == null ? "Not set" : formatCurrency(lot.price)}</dd>
         </div>
-        <div><dt>Classification</dt><dd>{lot.category || "Not yet provided"}</dd></div>
-        <div><dt>Location Zone</dt><dd>{lot.location_zone || "unassigned"}</dd></div>
-        <div><dt>Description</dt><dd>{lot.description || "Not yet provided"}</dd></div>
+        <div className="lot-detail-zone">
+          <dt>Location Zone</dt>
+          <dd>{lot.location_zone && lot.location_zone !== "unassigned" ? lot.location_zone : "Not set"}</dd>
+        </div>
       </dl>
-      {onEditDetails && <button type="button" onClick={onEditDetails}>Edit Details</button>}
+      {onEditDetails && <button type="button" onClick={onEditDetails} className="lot-details-edit-button">Edit Details</button>}
 
       <div className="lot-location-card">
         <div>
           <p className="lot-panel-eyebrow">Location</p>
           <p className="lot-panel-muted">
-            {lot.location_url ? "Open the saved map location for this lot." : "Not yet provided"}
+            {lot.location_url ? "Open the saved map location for this lot." : "Not set"}
           </p>
         </div>
 

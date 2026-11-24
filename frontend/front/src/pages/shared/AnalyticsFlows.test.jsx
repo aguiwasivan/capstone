@@ -11,7 +11,7 @@ jest.mock("recharts", () => {
   const Container = ({ children }) => <div>{children}</div>;
   const Empty = () => null;
   return { ResponsiveContainer: Container, BarChart: Container, LineChart: Container,
-    CartesianGrid: Empty, XAxis: Empty, YAxis: Empty, Tooltip: Empty, Bar: Empty, Line: Empty, Legend: Empty };
+    CartesianGrid: Empty, Cell: Empty, XAxis: Empty, YAxis: Empty, Tooltip: Empty, Bar: Empty, Line: Empty, Legend: Empty };
 });
 
 let host;

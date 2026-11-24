@@ -47,10 +47,19 @@ export function buildSalesReportCsv(reportData) {
     ["Broker Commission", summary.broker_commission || 0],
     [],
     ["Transactions"],
-    ["Project", "Date", "TCP", "Agent Commission", "Manager Commission", "Broker Commission"],
+    ["Agent", "Manager", "Broker", "Buyer", "Project", "Subdivision", "Block", "Lot", "Lot Area (sqm)", "Date", "Status", "Selling Price", "Agent Commission", "Manager Commission", "Broker Commission"],
     ...transactions.map((sale) => [
-      sale.project,
+      sale.agent_name || "",
+      sale.manager_name || "",
+      sale.broker_name || "",
+      sale.client_name || "",
+      sale.project || "",
+      sale.subdivision_name || "",
+      sale.block_number || "",
+      sale.lot_number ?? "",
+      sale.lot_area ?? "",
       sale.sale_date,
+      sale.transaction_status,
       sale.total_contract_price,
       sale.agent_commission,
       sale.manager_commission,
@@ -209,9 +218,9 @@ export default function Reports() {
           <table className="properties-table">
             <thead>
               <tr>
-                <th>Project</th>
-                <th>Date</th>
-                <th>TCP</th>
+                <th>Agent</th><th>Manager</th><th>Broker</th><th>Buyer</th>
+                <th>Project</th><th>Subdivision</th><th>Block</th><th>Lot</th><th>Lot Area (sqm)</th>
+                <th>Date</th><th>Status</th><th>Selling Price</th>
                 <th>Agent Commission</th>
                 <th>Manager Commission</th>
                 <th>Broker Commission</th>
@@ -220,8 +229,10 @@ export default function Reports() {
             <tbody>
               {visibleTransactions.map((sale) => (
                 <tr key={sale.id}>
-                  <td>{sale.project}</td>
-                  <td>{sale.sale_date}</td>
+                  <td>{sale.agent_name || "—"}</td><td>{sale.manager_name || "—"}</td><td>{sale.broker_name || "—"}</td>
+                  <td>{sale.client_name || "—"}</td><td>{sale.project || "—"}</td><td>{sale.subdivision_name || "—"}</td>
+                  <td>{sale.block_number || "—"}</td><td>{sale.lot_number ?? "—"}</td><td>{sale.lot_area ?? "—"}</td>
+                  <td>{sale.sale_date}</td><td>{sale.transaction_status}</td>
                   <td>{formatCurrency(sale.total_contract_price)}</td>
                   <td>{formatCurrency(sale.agent_commission)}</td>
                   <td>{formatCurrency(sale.manager_commission)}</td>
@@ -230,7 +241,7 @@ export default function Reports() {
               ))}
               {!filteredTransactions.length && (
                 <tr>
-                  <td colSpan="6">No transactions found for this month.</td>
+                  <td colSpan="15">No transactions found for this month.</td>
                 </tr>
               )}
             </tbody>

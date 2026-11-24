@@ -457,3 +457,10 @@
 .role-layout .action-list { font-size: 13px; line-height: 2; }
 @media (max-width: 1100px) { .role-layout .role-dashboard-panels { grid-template-columns: 1fr; } }
 @media (max-width: 600px) { .role-layout .role-panel { padding: 18px; }.role-layout .role-stat-card { padding: 20px; }.role-layout .role-dashboard-header { margin-bottom: 20px; }.role-layout .role-stat-grid { gap: 12px; } }
+
+/* Compact summary cards across role dashboards. */
+.role-dashboard .role-stat-grid { gap: 12px; }
+.role-dashboard .role-stat-card, .role-layout .role-dashboard .role-stat-card { padding: 16px 18px; }
+.role-dashboard .role-stat-card p, .role-layout .role-dashboard .role-stat-card p { margin: 0 0 6px; font-size: 10px; line-height: 1.4; }
+.role-dashboard .role-stat-card strong, .role-layout .role-dashboard .role-stat-card strong { margin-bottom: 4px; font-size: clamp(19px, 2vw, 24px); line-height: 1.25; }
+.role-dashboard .role-stat-card span, .role-layout .role-dashboard .role-stat-card > span { font-size: 11px; line-height: 1.4; }

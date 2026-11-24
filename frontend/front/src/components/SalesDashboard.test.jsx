@@ -66,3 +66,26 @@ test("Strict Mode shares in-flight requests and refresh starts fresh requests", 
     delete global.IS_REACT_ACT_ENVIRONMENT;
   }
 });
+test("five sales values share a fitted size when an amount exceeds its card width", async () => {
+  global.IS_REACT_ACT_ENVIRONMENT = true;
+  const host = document.createElement("div");
+  const root = createRoot(host);
+  const clientWidth = jest.spyOn(HTMLElement.prototype, "clientWidth", "get").mockReturnValue(120);
+  const scrollWidth = jest.spyOn(HTMLElement.prototype, "scrollWidth", "get").mockImplementation(function () {
+    return this.textContent.includes("PHP") || this.textContent.includes("₱") ? 180 : 80;
+  });
+  api.get.mockImplementation((url) => Promise.resolve({ data: url === "sales-transactions/" ? [] :
+    url.startsWith("sales-predictions/") ? {} : { summary: { total_sales: 27, total_contract_price: 123456789 }, as_of_date: "2026-10-29" } }));
+  try {
+    await act(async () => root.render(<AuthContext.Provider value={{ user: { id: 1, role: "admin" } }}><SalesDashboard /></AuthContext.Provider>));
+    const grid = host.querySelector(".sales-summary-grid");
+    expect(grid.querySelectorAll(".role-stat-card")).toHaveLength(5);
+    expect(parseFloat(grid.style.getPropertyValue("--sales-value-size"))).toBeLessThan(18);
+    expect(grid.textContent).toContain("123,456,789.00");
+  } finally {
+    await act(async () => root.unmount());
+    clientWidth.mockRestore();
+    scrollWidth.mockRestore();
+    delete global.IS_REACT_ACT_ENVIRONMENT;
+  }
+});

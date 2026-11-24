@@ -1,4 +1,5 @@
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { Eye, FilePlus2, PencilLine, Send, Trash2 } from "lucide-react";
 import api from "../../api";
 import { AuthContext } from "../../context/AuthContext";
 import {
@@ -27,7 +28,6 @@ const emptyFilters = {
   block: "",
   lot: "",
   status: "all",
-  phase: "",
 };
 
 function percentage(value, total) {
@@ -72,6 +72,10 @@ export default function InteractiveBlueprint({ mode = "auto" }) {
   const [message, setMessage] = useState("");
   const [isRequesting, setIsRequesting] = useState(false);
   const [isUploadingBlueprint, setIsUploadingBlueprint] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(null);
+  const [uploadPhase, setUploadPhase] = useState('uploading');
+  const [uploadError, setUploadError] = useState(false);
+  const uploadInFlight = useRef(false);
   const [requestMessage, setRequestMessage] = useState("");
   const [recentLots, setRecentLots] = useState([]);
 
@@ -159,11 +163,10 @@ export default function InteractiveBlueprint({ mode = "auto" }) {
       const blockMatch = String(lot.block_number || "").toLowerCase().includes(filters.block.trim().toLowerCase());
       const lotMatch = String(lot.lot_number || "").toLowerCase().includes(filters.lot.trim().toLowerCase());
       const statusMatch = filters.status === "all" || lot.status === filters.status;
-      const phaseMatch = String(lot.phase || selectedBlueprint?.phase || "").toLowerCase().includes(filters.phase.trim().toLowerCase());
 
-      return blockMatch && lotMatch && statusMatch && phaseMatch;
+      return blockMatch && lotMatch && statusMatch;
     });
-  }, [filters, lots, selectedBlueprint?.phase]);
+  }, [filters, lots]);
 
   const dashboardStats = useMemo(() => {
     const totalLots = lots.filter((lot) => lot.status !== "open_space").length;
@@ -276,17 +279,27 @@ export default function InteractiveBlueprint({ mode = "auto" }) {
   }, [selectedBlueprint, isEditMode]);
 
   const handleImageSelected = async (file) => {
+    if (uploadInFlight.current) return;
     if (!discardCorrections()) return;
     setIsEditMode(false);
     const formData = new FormData();
     formData.append("title", file.name.replace(/\.[^.]+$/, "") || "Subdivision Blueprint");
     formData.append("image", file);
 
+    uploadInFlight.current = true;
+    setUploadProgress(null);
+    setUploadPhase('uploading');
+    setUploadError(false);
     setIsUploadingBlueprint(true);
     setMessage("Uploading blueprint and detecting lot polygons...");
 
     try {
-      const response = await uploadBlueprint(formData);
+      const response = await uploadBlueprint(formData, ({ loaded, total }) => {
+        if (!total || total <= 0) return;
+        const percent = Math.min(100, Math.max(0, Math.round((loaded / total) * 100)));
+        setUploadProgress(percent);
+        if (loaded >= total) setUploadPhase('processing');
+      });
       const blueprint = normalizeBlueprint(response.data);
       const detectedLots = (response.data.lots || response.data.blueprint_lots || []).map((lot) =>
         normalizeLot(lot, blueprint)
@@ -302,8 +315,10 @@ export default function InteractiveBlueprint({ mode = "auto" }) {
           : "Blueprint uploaded, but no lot polygons were confidently detected. Use admin edit mode to add polygons manually."
       );
     } catch (error) {
+      setUploadError(true);
       setMessage(error.response?.data?.detail || "Unable to upload and process this blueprint.");
     } finally {
+      uploadInFlight.current = false;
       setIsUploadingBlueprint(false);
     }
   };
@@ -404,31 +419,46 @@ export default function InteractiveBlueprint({ mode = "auto" }) {
   };
 
   return (
-    <main className="interactive-blueprint-page">
+    <main className="interactive-blueprint-page" aria-busy={isUploadingBlueprint}>
+      {isUploadingBlueprint && (
+        <div className="blueprint-upload-overlay" role="status" aria-live="polite">
+          <div className="blueprint-upload-card">
+            <span className="blueprint-upload-spinner" aria-hidden="true" />
+            <p>{uploadPhase === 'uploading' ? 'Uploading subdivision blueprint...' : 'Processing blueprint...'}</p>
+            {uploadPhase === 'uploading' && uploadProgress !== null && (
+              <div className="blueprint-upload-progress">
+                <progress aria-label="Blueprint upload progress" max="100" value={uploadProgress} />
+                <span>{uploadProgress}% uploaded</span>
+              </div>
+            )}
+            <small>Please keep this page open.</small>
+          </div>
+        </div>
+      )}
       <section className="blueprint-page-header">
-        <div>
-          <p className="lot-panel-eyebrow">Interactive Lot Visualization</p>
-          <h1>Interactive Blueprint</h1>
-          <p>AI-assisted lot detection with admin-reviewed polygon overlays.</p>
+        <div className="blueprint-heading">
+          <div className="blueprint-title-row">
+            <h1>Interactive Blueprint</h1>
+            {selectedBlueprint?.status && (
+              <span className="blueprint-status-pill">{selectedBlueprint.status}</span>
+            )}
+          </div>
+          <p>View and manage subdivision lots.</p>
         </div>
         <div className="blueprint-header-actions">
-          <label className="blueprint-subdivision-control">
-            Subdivision
-            <select value={selectedBlueprintId} disabled={saving} onChange={(event) => { if (discardCorrections()) { setIsEditMode(false); setSelectedLot(null); setRecentLots([]); setSelectedBlueprintId(event.target.value); } }}>
-              {!blueprints.length && <option value="">No blueprint uploaded</option>}
-              {blueprints.map((blueprint) => (
-                <option key={blueprint.id} value={blueprint.id}>
-                  {blueprint.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          {selectedBlueprint?.status && (
-            <span className="blueprint-status-pill">{selectedBlueprint.status}</span>
-          )}
-          {isAdminMode && (
-            <>
+          <div className="blueprint-selection-row">
+            <label className="blueprint-subdivision-control">
+              Subdivision
+              <select value={selectedBlueprintId} disabled={saving} onChange={(event) => { if (discardCorrections()) { setIsEditMode(false); setSelectedLot(null); setRecentLots([]); setSelectedBlueprintId(event.target.value); } }}>
+                {!blueprints.length && <option value="">No blueprint uploaded</option>}
+                {blueprints.map((blueprint) => (
+                  <option key={blueprint.id} value={blueprint.id}>{blueprint.name}</option>
+                ))}
+              </select>
+            </label>
+            {isAdminMode && (
               <label className="blueprint-file-control">
+                <FilePlus2 size={16} aria-hidden="true" />
                 {isUploadingBlueprint ? "Processing..." : "Add Blueprint"}
                 <input
                   type="file"
@@ -441,30 +471,32 @@ export default function InteractiveBlueprint({ mode = "auto" }) {
                   }}
                 />
               </label>
-              <button type="button" className="edit-mode-button" disabled={saving || lotsLoading || isLoading} onClick={() => { if (isEditMode) { if (discardCorrections()) setIsEditMode(false); } else enterCorrectionMode(); }}>
-                {isEditMode ? "Preview" : "Correction Mode"}
+            )}
+          </div>
+          {isAdminMode && (
+            <div className="blueprint-action-toolbar" role="group" aria-label="Blueprint actions">
+              <div className="blueprint-primary-actions">
+                <button type="button" className="edit-mode-button" disabled={saving || lotsLoading || isLoading} onClick={() => { if (isEditMode) { if (discardCorrections()) setIsEditMode(false); } else enterCorrectionMode(); }}>
+                  {isEditMode ? <Eye size={16} aria-hidden="true" /> : <PencilLine size={16} aria-hidden="true" />}
+                  {isEditMode ? "Preview" : "Correction Mode"}
+                </button>
+                {isEditMode && <button type="button" className={`save-corrections-button ${dirty ? "has-changes" : ""}`} disabled={!dirty || saving} onClick={saveCorrections}>{saving ? "Saving..." : "Save Corrections"}</button>}
+                {dirty && <span role="status">Unsaved Changes</span>}
+                <button type="button" className="blueprint-publish-button" disabled={dirty || saving} onClick={publishSelectedBlueprint}>
+                  <Send size={16} aria-hidden="true" />Publish
+                </button>
+              </div>
+              <button type="button" className="remove-blueprint-button" onClick={removeSelectedBlueprint} disabled={!selectedBlueprint?.id || saving}>
+                <Trash2 size={16} aria-hidden="true" />Remove Blueprint
               </button>
-              {isEditMode && <button type="button" className={`save-corrections-button ${dirty ? "has-changes" : ""}`} disabled={!dirty || saving} onClick={saveCorrections}>{saving ? "Saving..." : "Save Corrections"}</button>}
-              {dirty && <span role="status">Unsaved Changes</span>}
-              <button type="button" className="edit-mode-button" disabled={dirty || saving} onClick={publishSelectedBlueprint}>
-                Publish
-              </button>
-              <button
-                type="button"
-                className="remove-blueprint-button"
-                onClick={removeSelectedBlueprint}
-                disabled={!selectedBlueprint?.id || saving}
-              >
-                Remove Blueprint
-              </button>
-            </>
+            </div>
           )}
         </div>
       </section>
 
       <LotFilterBar filters={filters} onChange={setFilters} onReset={() => setFilters(emptyFilters)} />
 
-      {message && <p className="blueprint-message" role="status">{message}</p>}
+      {message && <p className="blueprint-message" role={uploadError ? "alert" : "status"}>{message}</p>}
       {isLoading && <p className="blueprint-message">Loading blueprints...</p>}
       {(loadError || lotsError) && <p className="blueprint-message" role="alert">{loadError || lotsError}</p>}
 

@@ -71,3 +71,57 @@ test("failed batch retains edits and warns before discarding", async () => {
   expect(api.saveBlueprintCorrections).toHaveBeenLastCalledWith("map", { updates: [{ id: "1", status: "sold" }], creates: [], deletes: [] });
   confirm.mockRestore();
 });
+
+test('upload overlay shows real progress until the server completes', async () => {
+  let resolveUpload;
+  api.uploadBlueprint.mockImplementation(() => new Promise((resolve) => { resolveUpload = resolve; }));
+  const input = host.querySelector('.blueprint-header-actions input[type="file"]');
+  const file = new File(['blueprint'], 'cotta.png', { type: 'image/png' });
+  Object.defineProperty(input, 'files', { configurable: true, value: [file] });
+  await act(async () => input.dispatchEvent(new Event('change', { bubbles: true })));
+  expect(host.textContent).toContain('Uploading subdivision blueprint...');
+  expect(input.disabled).toBe(true);
+  const progress = api.uploadBlueprint.mock.calls[0][1];
+  await act(async () => progress({ loaded: 50, total: 100 }));
+  expect(host.querySelector('progress').value).toBe(50);
+  await act(async () => progress({ loaded: 100, total: 100 }));
+  expect(host.textContent).toContain('Processing blueprint...');
+  expect(host.querySelector('.blueprint-upload-overlay')).not.toBeNull();
+  await act(async () => resolveUpload({ data: { id: 'new-map', title: 'Cotta', lots: [] } }));
+  expect(host.querySelector('.blueprint-upload-overlay')).toBeNull();
+  expect(input.disabled).toBe(false);
+});
+
+test('failed upload removes overlay, shows error, and permits retry', async () => {
+  api.uploadBlueprint.mockRejectedValue({ response: { data: { detail: 'Upload failed. Please retry.' } } });
+  const input = host.querySelector('.blueprint-header-actions input[type="file"]');
+  Object.defineProperty(input, 'files', { configurable: true, value: [new File(['x'], 'map.png', { type: 'image/png' })] });
+  await act(async () => input.dispatchEvent(new Event('change', { bubbles: true })));
+  expect(host.querySelector('.blueprint-upload-overlay')).toBeNull();
+  expect(host.querySelector('[role="alert"]').textContent).toContain('Upload failed. Please retry.');
+  expect(input.disabled).toBe(false);
+});
+
+test('header separates blueprint selection from action controls', () => {
+  const header = host.querySelector('.blueprint-page-header');
+  expect(header.querySelector('h1').textContent).toBe('Interactive Blueprint');
+  expect(header.textContent).not.toContain('Interactive Lot Visualization');
+  expect(header.querySelector('.blueprint-title-row .blueprint-status-pill')).not.toBeNull();
+  expect(header.querySelector('.blueprint-selection-row select')).not.toBeNull();
+  expect(header.querySelector('.blueprint-selection-row input[type="file"]')).not.toBeNull();
+  expect(header.querySelector('.blueprint-action-toolbar .edit-mode-button')).not.toBeNull();
+  expect(header.querySelector('.blueprint-action-toolbar .blueprint-publish-button')).not.toBeNull();
+  expect(header.querySelector('.blueprint-action-toolbar .remove-blueprint-button')).not.toBeNull();
+});
+
+test('lot filters provide block, lot and status with reset', async () => {
+  const filters = host.querySelector('.lot-filter-bar');
+  expect([...filters.querySelectorAll('label span')].map((label) => label.textContent)).toEqual(['Block', 'Lot', 'Status']);
+  expect(filters.querySelector('input[placeholder="Search phase"]')).toBeNull();
+  expect(filters.querySelector('button').textContent.trim()).toBe('Reset');
+  const status = filters.querySelector('select');
+  await act(async () => { status.value = 'sold'; status.dispatchEvent(new Event('change', { bubbles: true })); });
+  expect(status.value).toBe('sold');
+  await act(async () => filters.querySelector('button').click());
+  expect(status.value).toBe('all');
+});

@@ -36,15 +36,6 @@ export default function LotFilterBar({ filters, onChange, onReset }) {
           <option value="open_space">Open Space</option>
         </select>
       </label>
-      <label>
-        <span>Phase</span>
-        <input
-          type="search"
-          value={filters.phase}
-          onChange={(event) => updateFilter("phase", event.target.value)}
-          placeholder="Search phase"
-        />
-      </label>
       <button type="button" className="lot-filter-reset" onClick={onReset}>
         Reset
       </button>

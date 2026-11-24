@@ -326,14 +326,6 @@ export default function BlueprintEditor({
               </select>
             </label>
             <label>
-              Classification
-              <input value={draft.category} onChange={(event) => setDraft({ ...draft, category: event.target.value })} placeholder="Category" />
-            </label>
-            <label>
-              Description
-              <textarea value={draft.description} onChange={(event) => setDraft({ ...draft, description: event.target.value })} />
-            </label>
-            <label>
               Location Zone
               <select value={draft.location_zone} onChange={(event) => setDraft({ ...draft, location_zone: event.target.value })} aria-describedby="location-zone-help">
                 {LOCATION_ZONES.map((zone) => <option key={zone.value} value={zone.value}>{zone.label}</option>)}

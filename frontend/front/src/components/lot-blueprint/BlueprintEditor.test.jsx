@@ -14,7 +14,7 @@ test("selecting a polygon never saves or moves it and pan mode cannot draw", asy
   global.IS_REACT_ACT_ENVIRONMENT = true;
   const host = document.createElement("div");
   const root = createRoot(host);
-  const lot = { id: 1, lot_number: 1, coordinates: [[10, 10], [100, 10], [100, 100]], status: "available" };
+  const lot = { id: 1, lot_number: 1, coordinates: [[10, 10], [100, 10], [100, 100]], status: "available", category: "Existing classification", description: "Existing description" };
   const select = jest.fn();
   const update = jest.fn();
   const save = jest.fn();
@@ -27,6 +27,8 @@ test("selecting a polygon never saves or moves it and pan mode cannot draw", asy
     expect(update).not.toHaveBeenCalled();
     expect(save).not.toHaveBeenCalled();
     expect(host.querySelectorAll("input[required]")).toHaveLength(0);
+    expect(host.querySelector(".editor-form").textContent).not.toContain("Classification");
+    expect(host.querySelector(".editor-form").textContent).not.toContain("Description");
     const status = host.querySelector(".editor-form select");
     await act(async () => {
       status.value = "reserved";

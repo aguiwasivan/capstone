@@ -1020,10 +1020,12 @@ def filtered_performance_reservations(params):
     return reservations
 
 
-def build_top_performing_agents_analytics(params):
+def build_top_performing_agents_analytics(params, viewer=None):
     users = list(filtered_performance_users(params))
     user_ids = [user.id for user in users]
     sales = filtered_performance_sales(params)
+    if viewer is not None and str(getattr(viewer, 'role', '') or '').lower() == "manager":
+        sales = sales.filter(manager=viewer)
 
     agent_sales = {
         row['agent_id']: row
@@ -1049,10 +1051,14 @@ def build_top_performing_agents_analytics(params):
         )
     }
 
+    conversion_sales = reservation_conversion_exists_query()
+    if viewer is not None and str(getattr(viewer, 'role', '') or '').lower() == 'manager':
+        conversion_sales = conversion_sales.filter(manager=viewer)
+
     reservation_rows = {
         row['assigned_agent_id']: row for row in
         filtered_performance_reservations(params).filter(assigned_agent_id__in=user_ids)
-        .annotate(converted=Exists(reservation_conversion_exists_query()))
+        .annotate(converted=Exists(conversion_sales))
         .values('assigned_agent_id').annotate(handled=Count('id'), converted_count=Count('id', filter=Q(converted=True)))
     }
     performance_data = []
@@ -1194,7 +1200,18 @@ class TopPerformingAgentsAnalyticsView(APIView):
         if permission_error:
             return permission_error
 
-        return Response(build_top_performing_agents_analytics(request.query_params))
+        if request.query_params.get('details') == '1':
+            user_id = request.query_params.get('user_id')
+            if not user_id:
+                return Response({'detail': 'An agent is required.'}, status=status.HTTP_400_BAD_REQUEST)
+            validate_analytics_filters(request.query_params)
+            sales = filtered_performance_sales(request.query_params).filter(agent_id=user_id)
+            if role_name(request) == 'manager':
+                sales = sales.filter(manager=request.user)
+            sales = sales.select_related('manager', 'broker', 'client').order_by('-sale_date', '-id')
+            return Response({'transactions': SaleTransactionSerializer(sales, many=True).data})
+
+        return Response(build_top_performing_agents_analytics(request.query_params, request.user))
 
 
 class AgentSalesPipelineForecastView(APIView):
@@ -1222,7 +1239,7 @@ class LotListView(APIView):
             .filter(status='approved')
             .order_by('-reviewed_at', '-created_at')
         )
-        lots = Lot.objects.prefetch_related(
+        lots = Lot.objects.select_related('subdivision').prefetch_related(
             Prefetch(
                 'reservation_requests',
                 queryset=approved_reservations,
@@ -1442,7 +1459,14 @@ class ReservationRequestListCreateView(APIView):
         if auth_error:
             return auth_error
 
-        requests = ReservationRequest.objects.select_related('lot', 'client', 'reviewed_by')
+        requests = ReservationRequest.objects.select_related(
+            'lot__subdivision', 'client', 'reviewed_by', 'assigned_agent',
+        ).prefetch_related(Prefetch(
+            'lot__reservation_requests',
+            queryset=ReservationRequest.objects.filter(status='approved')
+                .select_related('client', 'reviewed_by').order_by('-reviewed_at', '-created_at'),
+            to_attr='approved_reservations',
+        ))
 
         if request.user.is_authenticated and request.user.role == 'client':
             requests = requests.filter(client=request.user)
@@ -2949,17 +2973,74 @@ class BlueprintLotsListView(APIView):
                 if any(other != key and identity_pair == pair for other, identity_pair in final_identities.items()):
                     raise ValidationError('Another polygon already uses this block and lot number.')
 
+        # Compare the same normalized lot numbers used by inventory synchronization.
+        for key, serializer, inventory in pending:
+            old = existing.get(key)
+            block, number_text = final_identities[key]
+            number = lot_identity_number(number_text)
+            old_pair = (old.block_number, lot_identity_number(old.lot_number)) if old else None
+            pair = (block, number)
+            if block and number is not None and pair != old_pair:
+                if any(other != key and other_block == block and lot_identity_number(other_number) == number
+                       for other, (other_block, other_number) in final_identities.items()):
+                    raise ValidationError('Another polygon already uses this block and lot number.')
+
+        # Validate inventory identities against the final batch before moving any row.
+        # Existing inventory IDs are retained so reservation and sales links survive.
+        moving = []
+        for key, serializer, inventory in pending:
+            if not inventory:
+                continue
+            old = existing[key]
+            block = serializer.validated_data.get('block_number', old.block_number) or ''
+            number = lot_identity_number(serializer.validated_data.get('lot_number', old.lot_number))
+            status_value = serializer.validated_data.get('status', old.status)
+            if number is None or status_value == 'open_space':
+                raise ValidationError('An inventory lot must retain a numeric lot identity and cannot become open space.')
+            if (inventory.block, inventory.lot_number) != (block, number):
+                moving.append((inventory, block, number))
+
+        moving_ids = [item[0].pk for item in moving]
+        targets = set()
+        for inventory, block, number in moving:
+            target = (inventory.subdivision_id, block, number)
+            if target in targets or Lot.objects.filter(
+                subdivision_id=inventory.subdivision_id, block=block, lot_number=number,
+            ).exclude(pk__in=moving_ids).exists():
+                raise ValidationError('Another inventory lot already uses this block and lot number.')
+            targets.add(target)
+
+        if blueprint.status == 'published':
+            subdivision = Subdivision.objects.filter(name=blueprint.title).first()
+            if subdivision:
+                for key, serializer, inventory in pending:
+                    if inventory:
+                        continue
+                    old = existing.get(key)
+                    block, number_text = final_identities[key]
+                    number = lot_identity_number(number_text)
+                    old_pair = (old.block_number, lot_identity_number(old.lot_number)) if old else None
+                    if block and number is not None and (block, number) != old_pair:
+                        target = (subdivision.pk, block, number)
+                        if target in targets or Lot.objects.filter(
+                            subdivision_id=subdivision.pk, block=block, lot_number=number,
+                        ).exclude(pk__in=moving_ids).exists():
+                            raise ValidationError('Another inventory lot already uses this block and lot number.')
+                        targets.add(target)
+
+        # Temporarily move only changing identities inside this transaction. This permits
+        # swaps while keeping the unique constraint and each inventory primary key intact.
+        for inventory, block, number in moving:
+            temporary = f'__blueprint_{uuid.uuid4().hex}'
+            inventory.block = temporary
+            inventory.save(update_fields=['block'])
+        for inventory, block, number in moving:
+            inventory.block, inventory.lot_number = block, number
+            inventory.save(update_fields=['block', 'lot_number'])
+
         saved = []
         for key, serializer, inventory in pending:
             lot = serializer.save(blueprint=blueprint, **({'id': key} if serializer.instance is None else {}))
-            if inventory:
-                number = lot_identity_number(lot.lot_number)
-                if number is None or lot.status == 'open_space':
-                    raise ValidationError('An inventory lot must retain a numeric lot identity and cannot become open space.')
-                if Lot.objects.filter(subdivision=inventory.subdivision, block=lot.block_number, lot_number=number).exclude(pk=inventory.pk).exists():
-                    raise ValidationError('Another inventory lot already uses this block and lot number.')
-                inventory.block, inventory.lot_number = lot.block_number, number
-                inventory.save(update_fields=['block', 'lot_number'])
             saved.append(lot)
         for lot in removed:
             if blueprint.status == 'published' and not has_ambiguous_identity(lot):

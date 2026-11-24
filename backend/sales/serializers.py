@@ -18,14 +18,16 @@ def calculate_commission(total_contract_price, percentage):
 
 
 class SaleTransactionSerializer(serializers.ModelSerializer):
-    agent_name = serializers.CharField(source='agent.get_full_name', read_only=True)
-    manager_name = serializers.CharField(source='manager.get_full_name', read_only=True)
-    broker_name = serializers.CharField(source='broker.get_full_name', read_only=True)
-    client_name = serializers.CharField(source='client.get_full_name', read_only=True)
+    agent_name = serializers.SerializerMethodField()
+    manager_name = serializers.SerializerMethodField()
+    broker_name = serializers.SerializerMethodField()
+    client_name = serializers.SerializerMethodField()
     lot_label = serializers.SerializerMethodField()
     subdivision_name = serializers.SerializerMethodField()
     block_number = serializers.SerializerMethodField()
     lot_number = serializers.SerializerMethodField()
+    lot_area = serializers.SerializerMethodField()
+    transaction_status = serializers.SerializerMethodField()
     payment_status = serializers.SerializerMethodField()
     remaining_balance = serializers.SerializerMethodField()
     agent_commission_percent = serializers.DecimalField(
@@ -71,6 +73,8 @@ class SaleTransactionSerializer(serializers.ModelSerializer):
             'subdivision_name',
             'block_number',
             'lot_number',
+            'lot_area',
+            'transaction_status',
             'developer',
             'project',
             'sale_date',
@@ -89,6 +93,22 @@ class SaleTransactionSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['created_by', 'created_at']
 
+    @staticmethod
+    def _person_name(person):
+        return (person.get_full_name().strip() or person.username) if person else ''
+
+    def get_agent_name(self, sale):
+        return self._person_name(sale.agent)
+
+    def get_manager_name(self, sale):
+        return self._person_name(sale.manager)
+
+    def get_broker_name(self, sale):
+        return self._person_name(sale.broker)
+
+    def get_client_name(self, sale):
+        return self._person_name(sale.client)
+
     def get_lot_label(self, sale):
         if not sale.lot:
             return ''
@@ -104,6 +124,12 @@ class SaleTransactionSerializer(serializers.ModelSerializer):
 
     def get_lot_number(self, sale):
         return sale.lot.lot_number if sale.lot else ''
+
+    def get_lot_area(self, sale):
+        return sale.lot.area if sale.lot else None
+
+    def get_transaction_status(self, sale):
+        return 'Completed'
 
     def get_payment_status(self, sale):
         return 'Not recorded'

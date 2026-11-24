@@ -1,6 +1,6 @@
 import { summarizeSales as buildSummary, monthlySalesTotals } from "../utils/salesAnalytics";
 import useAnalyticsRefresh from "../hooks/useAnalyticsRefresh";
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   CartesianGrid,
   Line,
@@ -66,6 +66,7 @@ export default function SalesDashboard({
   const [predictionError, setPredictionError] = useState("");
   const [predictionLoading, setPredictionLoading] = useState(true);
   const [retryVersion, setRetryVersion] = useState(0);
+  const summaryGrid = useRef(null);
   const loadedScope = useRef(null);
   const pendingRequests = useRef(new Map());
   const userRole = String(user?.role || "").toLowerCase();
@@ -192,6 +193,35 @@ export default function SalesDashboard({
     [monthlyRows]
   );
 
+  // Keep every value the same size while fitting the widest amount in its card.
+  useLayoutEffect(() => {
+    const grid = summaryGrid.current;
+    if (!grid) return undefined;
+    let active = true;
+    const fitValues = () => {
+      if (!active) return;
+      grid.style.setProperty("--sales-value-size", "18px");
+      const values = Array.from(grid.querySelectorAll(".role-stat-card > strong"));
+      let size = 18;
+      values.forEach((value) => {
+        if (value.clientWidth && value.scrollWidth > value.clientWidth) {
+          size = Math.min(size, 18 * (value.clientWidth - 2) / value.scrollWidth);
+        }
+      });
+      grid.style.setProperty("--sales-value-size", String(Math.max(1, size)) + "px");
+    };
+    fitValues();
+    const observer = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(fitValues);
+    if (observer) observer.observe(grid);
+    else window.addEventListener("resize", fitValues);
+    if (document.fonts?.ready) document.fonts.ready.then(fitValues);
+    return () => {
+      active = false;
+      if (observer) observer.disconnect();
+      else window.removeEventListener("resize", fitValues);
+    };
+  }, [loading, error, analytics, summary, totals]);
+
   if (loading) return <AnalyticsSkeleton label="Loading sales analytics..." cards={5} charts={2} />;
   if (error && !analytics) return <div className="analytics-section-error" role="alert"><p>{error}</p><button className="analytics-retry-button" type="button" onClick={() => setRetryVersion((value) => value + 1)}>Retry sales analytics</button></div>;
 
@@ -207,7 +237,7 @@ export default function SalesDashboard({
         </div>
       )}
 
-      <div className="role-stat-grid">
+      <div ref={summaryGrid} className="role-stat-grid sales-summary-grid">
         <section className="role-stat-card">
           <p>Total Sales</p>
           <strong>{summary.total_sales || 0}</strong>

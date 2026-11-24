@@ -4,8 +4,8 @@ export function listBlueprints() {
   return api.get("blueprints/");
 }
 
-export function uploadBlueprint(formData) {
-  return api.post("blueprints/upload/", formData);
+export function uploadBlueprint(formData, onUploadProgress) {
+  return api.post("blueprints/upload/", formData, { onUploadProgress });
 }
 
 export function publishBlueprint(blueprintId) {
